@@ -7,6 +7,8 @@ import player.User;
 import player.Computer;
 import board.Board;
 import statistics.Statistics;
+// enum imports
+import player.Computer.Difficulty;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,6 +22,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+
+
 /**
  * This is a battleship game where a user competes against a computer or another player.
  * In player vs. AI mode, the user and computer take turns inputting and randomly generating coordinates,
@@ -30,6 +34,7 @@ import java.io.Serializable;
  * Date of last change: Apr. 11, 2017
  */
 public class Game implements ActionListener, Serializable {
+	
 	private Player player1;
 	private Player player2;
 	private Board player1Board;
@@ -110,9 +115,10 @@ public class Game implements ActionListener, Serializable {
 	
 	// Player vs. computer mode
 	// Parameter is a string representing the difficulty of the AI ("E"/"M"/"H")
-	private void playerVsAI(String difficulty) {		
+	private void playerVsAI(Difficulty diff) {		
 		player1 = new User();
-		player2 = new Computer(difficulty);
+			
+		player2 = new Computer(diff);
 		player1Board = new Board("Player");
 		player2Board = new Board("Computer");
 		
@@ -230,7 +236,15 @@ public class Game implements ActionListener, Serializable {
 		} else if (actionCommand.equals("Player vs. Computer")) {
 			gui.difficultySetting(this);
 		} else if (actionCommand.equals("Easy") || actionCommand.equals("Medium") || actionCommand.equals("Hard")) {
-			playerVsAI(actionCommand.substring(0, 1)); // Get first letter
+			Difficulty diff;
+			if (actionCommand.equals("Easy")) {
+				diff = Difficulty.EASY;
+			} else if (actionCommand.equals("Medium")) {
+				diff = Difficulty.MEDIUM;
+			} else {
+				diff = Difficulty.HARD;
+			}
+			playerVsAI(diff); // Get first letter
 		} else if (actionCommand.equals("Player 1")) { // Proceed to player 2 setup
 			gui.shipSetupScreen(this, player2Board, player2Board.getStarShip().getShipName());
 		} else if (actionCommand.equals("Player")) { // Setup computer board and proceed to game

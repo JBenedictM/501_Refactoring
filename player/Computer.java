@@ -11,28 +11,34 @@ import coordinates.Coordinates;
  * @version 1.7
  */
 public class Computer extends Player {
+	
+	// Enum representing difficulty
+	public enum Difficulty {
+		EASY, MEDIUM, HARD;
+	}
+	
 	// constants
 	public static final char SHIP = 'S';
 	public static final char EMPTY = ' ';
 	public static final char HIT = 'X';
 	public static final char MISS = 'O';
 	
-	private int difficultyNumber; // used for the probability of the computer making the right choice, the higher the better the chance
+	// used for the probability of the computer making the right choice, the higher the better the chance
+	private int difficultyNumber; 
 	
 	/**
-	 * choose from 3 difficulties (("e")asy, ("m")ediumn, ("h")ard)
 	 * easy has 50% chance to make the right move
 	 * medium has 75%
 	 * hard has 100%
 	 * or else the computer picks a random coordinate
 	 * @param difficulty - single letter string used to determine the difficulty
 	 */
-	public Computer(String difficulty) {
-		if (difficulty.equalsIgnoreCase("h")) {
+	public Computer(Difficulty diff) {
+		if (diff == Difficulty.HARD) {
 			difficultyNumber = 4;
-		} else if (difficulty.equalsIgnoreCase("m")) {
+		} else if (diff == Difficulty.MEDIUM) {
 			difficultyNumber = 3;
-		} else if (difficulty.equalsIgnoreCase("e")) {
+		} else if (diff == Difficulty.EASY) {
 			difficultyNumber = 2;
 		}
 	}
