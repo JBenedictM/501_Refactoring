@@ -1,0 +1,4 @@
+/bin/
+*.ser
+*.project
+*.classpath
