@@ -1,11 +1,11 @@
-package battleship.gui;
+package gui;
 
-import battleship.game.Game;
-import battleship.coordinates.Coordinates;
-import battleship.player.User;
-import battleship.board.Board;
-import battleship.statistics.Statistics;
-import battleship.ships.Ship;
+import game.Game;
+import coordinates.Coordinates;
+import player.User;
+import board.Board;
+import statistics.Statistics;
+import ships.Ship;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -523,9 +523,9 @@ public class GUI extends JFrame implements Serializable {
 		int index = aShip.indexOfLocation(row, col);
 		String path;
 		if (aShip.isAlive()) {
-			path = "battleship/images/alive/" + shipName + "_" + orientation + index + ".png";
+			path = "./images/alive/" + shipName + "_" + orientation + index + ".png";
 		} else {
-			path = "battleship/images/dead/" + shipName + "_" + orientation + index + ".png";
+			path = "./images/dead/" + shipName + "_" + orientation + index + ".png";
 		}
 		// Setting the icon if it exists
 		File image = new File(path);
@@ -668,7 +668,7 @@ public class GUI extends JFrame implements Serializable {
 		button.setActionCommand("|" + ship.getShipName() + "," + title);
 		
 		// Setting the icon if it exists
-		String path = "battleship/images/" + ship.getShipName() + "_" + ship.getOrientation() + ".png";
+		String path = "./images/" + ship.getShipName() + "_" + ship.getOrientation() + ".png";
 		File image = new File(path);
 		if (image.exists()) {
 			button.setIcon(new ImageIcon(path));

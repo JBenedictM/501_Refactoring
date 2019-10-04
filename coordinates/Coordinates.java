@@ -1,4 +1,4 @@
-package battleship.coordinates;
+package coordinates;
 
 import java.io.Serializable;
 

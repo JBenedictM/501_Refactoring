@@ -1,4 +1,4 @@
-package battleship.statistics;
+package statistics;
 
 import java.io.EOFException;
 import java.io.File;
@@ -10,7 +10,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-import battleship.player.User;
+import player.User;
 
 /**
  * Class representing high score statistics
@@ -27,7 +27,7 @@ public class Statistics implements Serializable {
 	private double hitRate;
 
 	// Constant name/path for file
-	public static final String FILE_NAME = "battleship/statistics/highscore.dat";
+	public static final String FILE_NAME = "./statistics/highscore.dat";
 
 	/**
 	 * Constructor; reads statistics from file and set instance variables

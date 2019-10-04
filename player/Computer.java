@@ -1,8 +1,8 @@
-package battleship.player;
+package player;
 
 import java.util.ArrayList;
 import java.util.Random;
-import battleship.coordinates.Coordinates;
+import coordinates.Coordinates;
 
 /**
  * AI's algorithm where the appropriate move is determined

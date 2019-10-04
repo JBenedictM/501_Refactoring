@@ -1,10 +1,10 @@
-package battleship.board;
+package board;
 
 import java.util.Random;
 import java.io.Serializable;
 
-import battleship.coordinates.Coordinates;
-import battleship.ships.Ship;
+import coordinates.Coordinates;
+import ships.Ship;
 
 
 /**

@@ -1,6 +1,6 @@
-package battleship.ships;
+package ships;
 
-import battleship.coordinates.Coordinates;
+import coordinates.Coordinates;
 
 import java.io.Serializable;
 

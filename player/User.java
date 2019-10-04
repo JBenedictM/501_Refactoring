@@ -1,6 +1,6 @@
-package battleship.player;
+package player;
 
-import battleship.coordinates.Coordinates;
+import coordinates.Coordinates;
 
 /**
  * Class representing a human battleship player

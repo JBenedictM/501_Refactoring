@@ -1,6 +1,6 @@
-package battleship.player;
+package player;
 
-import battleship.coordinates.Coordinates;
+import coordinates.Coordinates;
 
 import java.io.Serializable;
 

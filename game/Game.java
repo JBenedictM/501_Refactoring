@@ -1,12 +1,12 @@
-package battleship.game;
+package game;
 
-import battleship.gui.GUI;
-import battleship.coordinates.Coordinates;
-import battleship.player.Player;
-import battleship.player.User;
-import battleship.player.Computer;
-import battleship.board.Board;
-import battleship.statistics.Statistics;
+import gui.GUI;
+import coordinates.Coordinates;
+import player.Player;
+import player.User;
+import player.Computer;
+import board.Board;
+import statistics.Statistics;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,7 +37,7 @@ public class Game implements ActionListener, Serializable {
 	private Statistics stats;
 	private GUI gui;
 	
-	public static final String GAME_SAVE = "battleship/game/gameSave.ser";
+	public static final String GAME_SAVE = "./game/gameSave.ser";
 	
 	/**
 	 * Constructor initializes players and boards to null and stats and gui to new objects
