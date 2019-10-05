@@ -3,6 +3,8 @@ package player;
 import coordinates.Coordinates;
 
 import java.io.Serializable;
+// board piece enum
+import board.Board.BoardPiece;
 
 /**
  * Class representing a battleship player
@@ -16,5 +18,5 @@ public abstract class Player implements Serializable {
 	 * @param targetBoard; an array containing the opponent's ship locations
 	 * @return a Coordinates object representing the location targeted by the user
 	 */
-	public abstract Coordinates getMove(char[][] targetBoard);
+	public abstract Coordinates getMove(BoardPiece[][] targetBoard);
 }

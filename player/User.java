@@ -1,6 +1,8 @@
 package player;
 
 import coordinates.Coordinates;
+//board piece enum
+import board.Board.BoardPiece;
 
 /**
  * Class representing a human battleship player
@@ -59,12 +61,12 @@ public class User extends Player {
 	 * @param moveAsString; string containing row and column targeted by the user
 	 * @param targetBoard; an array containing the opponent's ship locations
 	 */
-	public void updateMoveAndStats(String moveAsString, char[][] targetBoard) {
+	public void updateMoveAndStats(String moveAsString, BoardPiece[][] targetBoard) {
 		int guessRow = Integer.parseInt(moveAsString.substring(0,1));
 		int guessCol = Integer.parseInt(moveAsString.substring(2));
 		
 		// Check if user hit or missed and update counters
-		if (targetBoard[guessRow][guessCol] == SHIP) { // User hit
+		if (targetBoard[guessRow][guessCol] == BoardPiece.SHIP) { // User hit
 			numHits++;
 			move = new Coordinates(guessRow,guessCol);
 		} else { // User missed
@@ -78,7 +80,7 @@ public class User extends Player {
 	 * @param targetBoard; an array containing the opponent's ship locations
 	 * @return a Coordinates object representing the location targeted by the user
 	 */
-	public Coordinates getMove(char[][] targetBoard) {
+	public Coordinates getMove(BoardPiece[][] targetBoard) {
 		return move;
 	}
 }

@@ -27,6 +27,9 @@ import javax.swing.Timer;
 import java.io.File;
 import java.io.Serializable;
 
+//board piece enum
+import board.Board.BoardPiece;
+
 /**
  * Graphical User Interface for a Battleship game.
  * @author Group 37
@@ -437,29 +440,29 @@ public class GUI extends JFrame implements Serializable {
 	 * @param use; A String to determine if ship is displayed
 	 */
 	private void setButtonBackground(JButton boardButton, Board boardObject, int row, int col, String use) {
-		char[][] board = boardObject.getBoard();
+		BoardPiece[][] board = boardObject.getBoard();
 		// Hits
-		if (board[row][col] == HIT) {
+		if (board[row][col] == BoardPiece.HIT) {
 			boardButton.setBackground(Color.RED);
 			boardButton.setOpaque(true);
 			boardButton.setEnabled(false);
 		} 
 		// Show players own ships
-		else if (board[row][col] == SHIP && !use.equals("Target")) {
+		else if (board[row][col] == BoardPiece.SHIP && !use.equals("Target")) {
 			setAliveShipIcons(boardButton, boardObject, row, col);
 		}
 		// Dead
-		else if (board[row][col] == DEAD) {
+		else if (board[row][col] == BoardPiece.DEAD) {
 			setDeadShipIcons(boardButton, boardObject, row, col);
 		}
 		// Misses
-		else if (board[row][col] == MISS) {
+		else if (board[row][col] == BoardPiece.MISS) {
 			boardButton.setBackground(Color.BLUE);
 			boardButton.setOpaque(true);
 			boardButton.setEnabled(false);
 		}
 		// Error message
-		else if (board[row][col] != EMPTY && board[row][col] != SHIP) {
+		else if (board[row][col] != BoardPiece.EMPTY && board[row][col] != BoardPiece.SHIP) {
 			exceptionMessage("Error changing button colour");
 		}
 	}
@@ -820,8 +823,8 @@ public class GUI extends JFrame implements Serializable {
 	 * @param targetBoard; an array containing the opponent's ship locations
 	 * @param name; the name of the player
 	 */
-	public void displayPlayer1Result(Coordinates move, char[][] targetBoard, String name) {
-		if (targetBoard[move.getRow()][move.getCol()] == SHIP) {
+	public void displayPlayer1Result(Coordinates move, BoardPiece[][] targetBoard, String name) {
+		if (targetBoard[move.getRow()][move.getCol()] == BoardPiece.SHIP) {
 			messageBox1.setText(name + " got a hit!");
 		} else {
 			messageBox1.setText(name + " missed.");
@@ -834,8 +837,8 @@ public class GUI extends JFrame implements Serializable {
 	 * @param targetBoard; an array containing the opponent's ship locations
 	 * @param name; the name of the player
 	 */
-	public void displayPlayer2Result(Coordinates move, char[][] targetBoard, String name) {
-		if (targetBoard[move.getRow()][move.getCol()] == SHIP) {
+	public void displayPlayer2Result(Coordinates move, BoardPiece[][] targetBoard, String name) {
+		if (targetBoard[move.getRow()][move.getCol()] == BoardPiece.SHIP) {
 			messageBox2.setText(name + " got a hit!");
 		} else {
 			messageBox2.setText(name + " missed.");

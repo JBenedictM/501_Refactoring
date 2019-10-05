@@ -6,7 +6,6 @@ import java.io.Serializable;
 import coordinates.Coordinates;
 import ships.Ship;
 
-
 /**
  * Class representing a battleship game board
  * 
@@ -19,16 +18,21 @@ import ships.Ship;
  * @version date: Apr. 11, 2017
  */
 public class Board implements Serializable {
-	// Constants
-	public static final char SHIP = 'S';
-	public static final char EMPTY = ' ';
-	public static final char HIT = 'X';
-	public static final char MISS = 'O';
-	public static final char DEAD = 'D';
-
+	
+	public enum BoardPiece {
+		SHIP, EMPTY, HIT, MISS, DEAD;
+	}
+		
+//	// Constants
+//	public static final char SHIP = 'S';
+//	public static final char EMPTY = ' ';
+//	public static final char HIT = 'X';
+//	public static final char MISS = 'O';
+//	public static final char DEAD = 'D';
+	
 	// Instance Variables 
 	private int shipsAlive;
-	private char[][] board = new char [9][9];
+	private BoardPiece[][] board;
 	private String title;
 	private Ship star;
 	private Ship battle;
@@ -43,16 +47,17 @@ public class Board implements Serializable {
 	public Board(String title) {
 		setTitle(title);
 		this.shipsAlive = 4;
-		this.board = new char[][] { 
-				{ ' ', '1', '2', '3', '4', '5', '6', '7', '8' },					   
-				{ '1', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' }, 							   
-				{ '2', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },							   
-				{ '3', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' }, 							   
-				{ '4', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },							   
-				{ '5', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' }, 							   
-				{ '6', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },							   
-				{ '7', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' }, 							   
-				{ '8', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' } 
+		// initilaize empty board
+		this.board = new BoardPiece[][] { 
+				{ BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY },
+				{ BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY },
+				{ BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY },
+				{ BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY },
+				{ BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY },
+				{ BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY },
+				{ BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY },
+				{ BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY },
+				{ BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY, BoardPiece.EMPTY }
 				};
 		this.star = new Ship("Star Ship", 5);
 		this.battle = new Ship("Battle Cruiser", 4);
@@ -70,15 +75,15 @@ public class Board implements Serializable {
 		int targetRow = coordinates.getRow(), targetColumn = coordinates.getCol();
 
 		// Hits
-		if (board[targetRow][targetColumn] == SHIP) {
-			board[targetRow][targetColumn] = HIT;
+		if (board[targetRow][targetColumn] == BoardPiece.SHIP) {
+			board[targetRow][targetColumn] = BoardPiece.HIT;
 			
 			// Update shipsAlive based on hits
 			numShipsAlive(targetRow, targetColumn);
 		} 
 		// Misses
-		else if (board[targetRow][targetColumn] == EMPTY) {
-			board[targetRow][targetColumn] = MISS;
+		else if (board[targetRow][targetColumn] == BoardPiece.EMPTY) {
+			board[targetRow][targetColumn] = BoardPiece.MISS;
 		} 
 		else {
 			throw new Exception("Error, coordinates out of range of board");
@@ -103,7 +108,7 @@ public class Board implements Serializable {
 				count++;
 			}
 			else {
-				setShipChar(element.getShipLength(), element.getLocation(), DEAD);
+				setShipChar(element.getShipLength(), element.getLocation(), BoardPiece.DEAD);
 			}
 		}
 
@@ -117,7 +122,7 @@ public class Board implements Serializable {
 	 * @param shipLength; An int representing the length of a ship
 	 * @param shipLocation; A Coordinates array of a ships location
 	 */
-	private void setShipChar(int shipLength, Coordinates[] shipLocation, char character) {
+	private void setShipChar(int shipLength, Coordinates[] shipLocation, BoardPiece new_piece) {
 		int shipRow, shipCol;
 		
 		// Extracts coordinates of the units of a ship
@@ -126,7 +131,7 @@ public class Board implements Serializable {
 			shipCol = shipLocation[index].getCol();
 			
 			// Appends the units into the board
-			board[shipRow][shipCol] = character;
+			board[shipRow][shipCol] = new_piece;
 		}
 	}
 
@@ -135,9 +140,9 @@ public class Board implements Serializable {
 	 * 
 	 * @return tempBoard; A deep copy of board
 	 */
-	public char[][] getBoard() {
+	public BoardPiece[][] getBoard() {
 		// Create a new 2d char array 
-		char[][] tempBoard = new char[9][9];
+		BoardPiece[][] tempBoard = new BoardPiece[9][9];
 		
 		// Loop to copy contents of instance variable 
 		for (int row = 0; row < 9; row++) {
@@ -181,7 +186,7 @@ public class Board implements Serializable {
 		}
 		// Places ships onto the user's board
 		ship.setAlive(true);
-		setShipChar(ship.getShipLength(), ship.getLocation(), SHIP);
+		setShipChar(ship.getShipLength(), ship.getLocation(), BoardPiece.SHIP);
 	}
 	
 	/**
@@ -244,7 +249,7 @@ public class Board implements Serializable {
 	private void setValidShip(Ship ship, int row, int col) throws Exception {
 		// remove the ship if already placed
 		if (ship.isAlive()) {
-			setShipChar(ship.getShipLength(), ship.getLocation(), EMPTY);
+			setShipChar(ship.getShipLength(), ship.getLocation(), BoardPiece.EMPTY);
 			ship.setAlive(false);
 		}
 		// set ship's location
@@ -255,7 +260,7 @@ public class Board implements Serializable {
             if (!checkShipOverlap(ship)) {
 				// Places ships onto the user's board
 				ship.setAlive(true);
-				setShipChar(ship.getShipLength(), ship.getLocation(), SHIP);
+				setShipChar(ship.getShipLength(), ship.getLocation(), BoardPiece.SHIP);
 			} else { // If the ship overlaps with another
 				throw new Exception("You have overlapped with another Ship!");
 			}
@@ -276,7 +281,7 @@ public class Board implements Serializable {
 		for (int index = 0; index < ship.getShipLength(); index++) {
 			int row = ship.getLocation()[index].getRow();
 			int col = ship.getLocation()[index].getCol();
-			if (board[row][col] == SHIP) {
+			if (board[row][col] == BoardPiece.SHIP) {
 				overlap = true;
 			}
 		}

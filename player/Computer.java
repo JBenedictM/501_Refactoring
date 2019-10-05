@@ -3,6 +3,8 @@ package player;
 import java.util.ArrayList;
 import java.util.Random;
 import coordinates.Coordinates;
+//board piece enum
+import board.Board.BoardPiece;
 
 /**
  * AI's algorithm where the appropriate move is determined
@@ -31,7 +33,7 @@ public class Computer extends Player {
 	 * medium has 75%
 	 * hard has 100%
 	 * or else the computer picks a random coordinate
-	 * @param difficulty - single letter string used to determine the difficulty
+	 * @param difficulty enum
 	 */
 	public Computer(Difficulty diff) {
 		if (diff == Difficulty.HARD) {
@@ -49,11 +51,11 @@ public class Computer extends Player {
 	 * 
 	 * returns true if the coordinate is either empty or a ship, else it returns false
 	 */
-	private boolean legalMove(int row, int column, char[][] playerBoard) {
+	private boolean legalMove(int row, int column, BoardPiece[][] playerBoard) {
 		boolean validity = false;
 		
 		try {
-			validity = playerBoard[row][column] == SHIP || playerBoard[row][column] == EMPTY;
+			validity = playerBoard[row][column] == BoardPiece.SHIP || playerBoard[row][column] == BoardPiece.EMPTY;
 		} catch (IndexOutOfBoundsException exception) {
 			// coordinates are out of bounds, validity is already set to false so no need to do anything
 		} 
@@ -64,7 +66,7 @@ public class Computer extends Player {
 	// checks for hits to the left and right of a hit coordinate
 	// playerBoard - grid to check on
 	// return - the number of horizontal hits 1 space apart
-	private int checkRow(int row, int column, char[][] playerBoard) {
+	private int checkRow(int row, int column, BoardPiece[][] playerBoard) {
 		int counter = 0;
 		boolean loopSwitch;
 			
@@ -73,7 +75,7 @@ public class Computer extends Player {
 		loopSwitch = true;
 		int columnCopy = column;
 		while (loopSwitch && columnCopy >= 1) {
-			if (playerBoard[row][columnCopy] == HIT) {
+			if (playerBoard[row][columnCopy] == BoardPiece.HIT) {
 				counter++;
 				columnCopy--;
 			} else {
@@ -85,7 +87,7 @@ public class Computer extends Player {
 		loopSwitch = true;
 		columnCopy = column;
 		while (loopSwitch && columnCopy <= 8) {
-			if (playerBoard[row][columnCopy] == HIT) {
+			if (playerBoard[row][columnCopy] == BoardPiece.HIT) {
 				counter++;
 				columnCopy++;
 			} else {
@@ -102,7 +104,7 @@ public class Computer extends Player {
 	// checks for hits above and below a hit coordinate
 	// playerBoard - grid to check on
 	// return - the number of hits vertically 1 space apart
-	private int checkCol(int row, int column, char[][] playerBoard) {
+	private int checkCol(int row, int column, BoardPiece[][] playerBoard) {
 		int counter = 0;
 		boolean loopSwitch;			
 	
@@ -111,7 +113,7 @@ public class Computer extends Player {
 		loopSwitch = true;
 		int rowCopy = row;
 		while (loopSwitch && rowCopy <= 8) {
-			if (playerBoard[rowCopy][column] == HIT) {
+			if (playerBoard[rowCopy][column] == BoardPiece.HIT) {
 				counter++;
 				rowCopy++;
 			} else {
@@ -123,7 +125,7 @@ public class Computer extends Player {
 		loopSwitch = true;
 		rowCopy = row;
 		while (loopSwitch && rowCopy >= 1) {
-			if (playerBoard[rowCopy][column] == HIT) {
+			if (playerBoard[rowCopy][column] == BoardPiece.HIT) {
 				counter++;
 				rowCopy--;
 			} else {
@@ -139,7 +141,7 @@ public class Computer extends Player {
 	
 	// finds all empty coordinates in four direction(up,down,left,right) then appends them to an arrayList
 	// @param uses the player's board for evaluation
-	private void fourDirectionGuess(int row, int column, char[][] playerBoard, ArrayList<Coordinates> possibleMoves) {
+	private void fourDirectionGuess(int row, int column, BoardPiece[][] playerBoard, ArrayList<Coordinates> possibleMoves) {
 		if (legalMove(row+1,column,playerBoard)) {
 			Coordinates moveDown = new Coordinates(row+1,column);
 			possibleMoves.add(moveDown);
@@ -160,14 +162,14 @@ public class Computer extends Player {
 
 	// checks if a coordinate is either both even or odd
 	// if a coordinate meets the requirement, it is appended to a parameter ArrayList
-	private void guess(int row, int column, char[][] playerBoard, ArrayList<Coordinates> possibleMoves) {		
+	private void guess(int row, int column, BoardPiece[][] playerBoard, ArrayList<Coordinates> possibleMoves) {		
 		if (row % 2 == column % 2 && legalMove(row,column,playerBoard)) {
 			possibleMoves.add(new Coordinates(row,column));
 		}
 	}
 	
 	// generates a random coordinate
-	private Coordinates randomCoord(char[][] playerBoard) {
+	private Coordinates randomCoord(BoardPiece[][] playerBoard) {
 		int randRow, randCol;
 		Coordinates randCoord;
 		
@@ -185,7 +187,7 @@ public class Computer extends Player {
 	 * makes a guess only if there is a connected straight line of hits
 	 * it guesses perpendicularly to the straight line of hits
 	 */
-	private void adjacentGuess(int row, int column, char[][] playerBoard, ArrayList<Coordinates> possibleMoves) {
+	private void adjacentGuess(int row, int column, BoardPiece[][] playerBoard, ArrayList<Coordinates> possibleMoves) {
 		int downRow = row + 1, upRow = row - 1;
 		int leftCol = column - 1, rightCol = column + 1;
 		
@@ -219,7 +221,7 @@ public class Computer extends Player {
 	 * @param playerBoard - 2d array of the player's
 	 * @return - a coordinates object containing an index for a 2d array
 	 */
-	public Coordinates getMove(char[][] playerBoard) {
+	public Coordinates getMove(BoardPiece[][] playerBoard) {
 		int loopCounter = 1;
 		Coordinates nextMove = null;
 		ArrayList<Coordinates> bestPossibleMoves = new ArrayList<>();
@@ -231,15 +233,15 @@ public class Computer extends Player {
 					for (int column = 1; column <= 8; column++) {
 						
 						// first loop, it looks to completely sink an already found ship
-						if (loopCounter == 1 && playerBoard[row][column] == HIT) {
+						if (loopCounter == 1 && playerBoard[row][column] == BoardPiece.HIT) {
 							if (checkRow(row,column,playerBoard) > 1 && checkCol(row,column,playerBoard) > 1) {
 								fourDirectionGuess(row,column,playerBoard,bestPossibleMoves);
 							}
 						// second loop, it makes a move perpendicularly to 2 connected hits
-						} else if (loopCounter == 2 && playerBoard[row][column] == HIT) {
+						} else if (loopCounter == 2 && playerBoard[row][column] == BoardPiece.HIT) {
 							adjacentGuess(row,column,playerBoard,bestPossibleMoves);
 						// third loop, it guesses where the next hit is of a single hit coordinate
-						} else if (loopCounter == 3 && playerBoard[row][column] == HIT) {
+						} else if (loopCounter == 3 && playerBoard[row][column] == BoardPiece.HIT) {
 							fourDirectionGuess(row,column,playerBoard,bestPossibleMoves);
 						// fourth loop, it makes a move that is either both even or odd 
 						} else if (loopCounter == 4) {
