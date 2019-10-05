@@ -5,7 +5,7 @@ import coordinates.Coordinates;
 import player.Player;
 import player.User;
 import player.Computer;
-import board.Board;
+import board.BattleshipBoard;
 import statistics.Statistics;
 // enum imports
 import player.Computer.Difficulty;
@@ -37,8 +37,8 @@ public class Game implements ActionListener, Serializable {
 	
 	private Player player1;
 	private Player player2;
-	private Board player1Board;
-	private Board player2Board;
+	private BattleshipBoard player1Board;
+	private BattleshipBoard player2Board;
 	private Statistics stats;
 	private GUI gui;
 	
@@ -86,8 +86,8 @@ public class Game implements ActionListener, Serializable {
 	private void playerVsPlayer() {
 		player1 = new User();
 		player2 = new User();
-		player1Board = new Board("Player 1");
-		player2Board = new Board("Player 2");
+		player1Board = new BattleshipBoard("Player 1");
+		player2Board = new BattleshipBoard("Player 2");
 		
 		gui.shipSetupScreen(this, player1Board, player1Board.getStarShip().getShipName());
 	}
@@ -119,8 +119,8 @@ public class Game implements ActionListener, Serializable {
 		player1 = new User();
 			
 		player2 = new Computer(diff);
-		player1Board = new Board("Player");
-		player2Board = new Board("Computer");
+		player1Board = new BattleshipBoard("Player");
+		player2Board = new BattleshipBoard("Computer");
 		
 		gui.shipSetupScreen(this, player1Board, player1Board.getStarShip().getShipName());
 	}
@@ -312,7 +312,7 @@ public class Game implements ActionListener, Serializable {
 		String boardName = setupInfo.substring(setupInfo.indexOf(",")+1);
 		
 		// Determine the board object to use
-		Board currentBoard = player1Board;		
+		BattleshipBoard currentBoard = player1Board;		
 		if (boardName.equals(player2Board.getTitle())) {
 			currentBoard = player2Board;
 		}

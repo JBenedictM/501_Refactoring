@@ -12,7 +12,6 @@ import board.Board.BoardPiece;
  * Date of last change: Apr. 9, 2017
  */
 public class User extends Player {
-	private static final char SHIP = 'S';
 	
 	private int numHits;
 	private int numMisses;

@@ -3,7 +3,7 @@ package gui;
 import game.Game;
 import coordinates.Coordinates;
 import player.User;
-import board.Board;
+import board.BattleshipBoard;
 import statistics.Statistics;
 import ships.Ship;
 
@@ -36,12 +36,6 @@ import board.Board.BoardPiece;
  * Date of last change: Apr. 11, 2017
  */
 public class GUI extends JFrame implements Serializable {
-	// Constants
-	public static final char SHIP = 'S';
-	public static final char EMPTY = ' ';
-	public static final char HIT = 'X';
-	public static final char MISS = 'O';
-	public static final char DEAD = 'D';
 	
 	private static final Dimension WINDOW_SIZE = new Dimension(960, 540);
 	private static final Dimension BOARD_BUTTON_SIZE = new Dimension(40, 40);
@@ -371,41 +365,51 @@ public class GUI extends JFrame implements Serializable {
 	 * and String title used to label the JPanel
 	 * @param use; A String to decide whether buttons will be enabled or disabled
 	 * @param game; A Game object used to add as an action listener
+	 * @param frameOn; enables/disables row and column numbers on the board
 	 */
-	private void displayBoard(JPanel aPanel, Board boardObject, String use, Game game) {
+	private void displayBoard(JPanel aPanel, BattleshipBoard boardObject, String use, Game game) {
 		// Create panel
 		aPanel = createBoardPanel(aPanel, boardObject.getTitle());
 		aPanel.removeAll();
+		
 		// Loop to create grid of JButtons and JLabels
 		for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
+            	// if frame is enabled, add row and column numbers to the grid
             	if (row == 0 || col == 0) { // Row and column labels
-            		JLabel rowColOneLabel = new JLabel("" + boardObject.getBoard()[row][col], JLabel.CENTER);
-            		aPanel.add(rowColOneLabel);
-            	} else {
-            		JButton boardButton = new JButton();
-  
-            		// Create border for buttons
-            		boardButton.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLUE));
-            		boardButton.setMinimumSize(BOARD_BUTTON_SIZE);
-            		boardButton.setPreferredSize(BOARD_BUTTON_SIZE);
-            		
-            		// Set background based on hits/misses by opponent
-            		setButtonBackground(boardButton, boardObject, row, col, use);
-					
-					if (!use.equals("Ship")) { // Enable buttons for setup or for player to target
-						boardButton.addActionListener(game);
-                		if (use.equals("Target")) {
-							boardButton.setActionCommand(row + "," + col + " " + boardObject.getTitle());
-						} else {
-							boardButton.setActionCommand(row + "," + col + "|" + use + "," + boardObject.getTitle());
-						}
-            		} else { // Disable buttons for match 
-                		boardButton.setEnabled(false);
+            		int labelInt = row+col;
+            		String labelStr = "";
+            		if (labelInt != 0) {
+            			labelStr = Integer.toString(labelInt);
             		}
-					
-            		aPanel.add(boardButton);
+            		
+            		JLabel rowColOneLabel = new JLabel(labelStr, JLabel.CENTER);
+            		aPanel.add(rowColOneLabel);
+            		
+            	} else{
+            		JButton boardButton = new JButton();
+          		  
+                	// Create border for buttons
+                	boardButton.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLUE));
+                	boardButton.setMinimumSize(BOARD_BUTTON_SIZE);
+                	boardButton.setPreferredSize(BOARD_BUTTON_SIZE);
+                	
+                	// Set background based on hits/misses by opponent
+                	setButtonBackground(boardButton, boardObject, row, col, use);
+    					
+                	if (!use.equals("Ship")) { // Enable buttons for setup or for player to target
+                		boardButton.addActionListener(game);
+                		if (use.equals("Target")) {
+                			boardButton.setActionCommand(row + "," + col + " " + boardObject.getTitle());
+    					} else {
+    						boardButton.setActionCommand(row + "," + col + "|" + use + "," + boardObject.getTitle());
+    					}
+                	} else { // Disable buttons for match 
+                		boardButton.setEnabled(false);
+                	}
+                	aPanel.add(boardButton);
             	}
+            		
             } 
         }
 	}
@@ -439,7 +443,7 @@ public class GUI extends JFrame implements Serializable {
 	 * @param col; An int representing the target column
 	 * @param use; A String to determine if ship is displayed
 	 */
-	private void setButtonBackground(JButton boardButton, Board boardObject, int row, int col, String use) {
+	private void setButtonBackground(JButton boardButton, BattleshipBoard boardObject, int row, int col, String use) {
 		BoardPiece[][] board = boardObject.getBoard();
 		// Hits
 		if (board[row][col] == BoardPiece.HIT) {
@@ -475,7 +479,7 @@ public class GUI extends JFrame implements Serializable {
 	 * @param row; The row that the button is assigned to
 	 * @param col; The column that the button is assigned to
 	 */
-	private void setAliveShipIcons(JButton boardButton, Board boardObject, int row, int col) {
+	private void setAliveShipIcons(JButton boardButton, BattleshipBoard boardObject, int row, int col) {
 		// Determine the ship in this location
 		Ship aShip = boardObject.getStarShip();
 		if (boardObject.getBattleCruiser().indexOfLocation(row, col) != -1 && boardObject.getBattleCruiser().isAlive()) {
@@ -497,7 +501,7 @@ public class GUI extends JFrame implements Serializable {
 	 * @param row; The row that the button is assigned to
 	 * @param col; The column that the button is assigned to
 	 */
-	private void setDeadShipIcons(JButton boardButton, Board boardObject, int row, int col) {
+	private void setDeadShipIcons(JButton boardButton, BattleshipBoard boardObject, int row, int col) {
 		// Determine the ship in this location
 		Ship aShip = boardObject.getStarShip();
 		if (boardObject.getBattleCruiser().indexOfLocation(row, col) != -1) {
@@ -557,7 +561,7 @@ public class GUI extends JFrame implements Serializable {
 	 * for adding ships and setting the ActionCommand
 	 * @param shipSelection; The String used in setting the ActionCommand
 	 */
-	public void shipSetupScreen(Game game, Board aBoard, String shipSelection) {
+	public void shipSetupScreen(Game game, BattleshipBoard aBoard, String shipSelection) {
 		contentPane.removeAll();
 		
 		// Add new JPanel leftBoardPanel to hold the board
@@ -603,7 +607,7 @@ public class GUI extends JFrame implements Serializable {
 	 * @param shipSelection; The String used in setting the ActionCommand
 	 * @param shipLegend; The JPanel that the buttons are added to
 	 */
-	private void addSetupButtons(Game game, Board aBoard, String shipSelection, JPanel shipLegend) {
+	private void addSetupButtons(Game game, BattleshipBoard aBoard, String shipSelection, JPanel shipLegend) {
 		// Add button for rotating ship
 		JButton rotateButton = new JButton("rotate");
 		rotateButton.setActionCommand("rotate" + "|" + shipSelection + "," + aBoard.getTitle());
@@ -769,7 +773,7 @@ public class GUI extends JFrame implements Serializable {
 	 * @param player2Board; player 2's board
 	 * @param game; listener for board buttons
 	 */
-	public void updatePlayer1Screen(Board player1Board, Board player2Board, Game game) {
+	public void updatePlayer1Screen(BattleshipBoard player1Board, BattleshipBoard player2Board, Game game) {
 		displayBoard(leftBoardPanel, player1Board, "Ship", game);
 		displayBoard(rightBoardPanel, player2Board, "Target", game);
 		shipBox1.setText(player1Board.getTitle() + " Targets Remaining: " + player1Board.getShipsAlive());
@@ -782,7 +786,7 @@ public class GUI extends JFrame implements Serializable {
 	 * @param player2Board; player 2's board
 	 * @param game; listener for board buttons
 	 */
-	public void updatePlayer2Screen(Board player1Board, Board player2Board, Game game) {
+	public void updatePlayer2Screen(BattleshipBoard player1Board, BattleshipBoard player2Board, Game game) {
 		displayBoard(leftBoardPanel, player2Board, "Ship", game);
 		displayBoard(rightBoardPanel, player1Board, "Target", game);
 		shipBox1.setText(player1Board.getTitle() + " Targets Remaining: " + player1Board.getShipsAlive());
