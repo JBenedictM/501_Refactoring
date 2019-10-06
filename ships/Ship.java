@@ -151,13 +151,10 @@ public class Ship implements Serializable {
 	
 	/**
 	 * Returns the index of the location at row and col 
-	 * 
-	 * @param row; The row value of type int
-	 * @param col; The column value of type int
+	 * @param coord - index to the board array
 	 * @return indexNum; returns the index if true and -1 if false
 	 */
-	public int indexOfLocation(int row, int col) {
-		Coordinates coord = new Coordinates(row,col);
+	public int indexOfLocation(Coordinates coord) {
 		int indexNum = -1;
 		for (int index = 0; index < shipLength; index++) {
 			if (location[index].equals(coord)) {

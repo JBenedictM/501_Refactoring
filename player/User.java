@@ -1,6 +1,7 @@
 package player;
 
 import coordinates.Coordinates;
+import board.*;
 //board piece enum
 import board.Board.BoardPiece;
 
@@ -60,12 +61,19 @@ public class User extends Player {
 	 * @param moveAsString; string containing row and column targeted by the user
 	 * @param targetBoard; an array containing the opponent's ship locations
 	 */
-	public void updateMoveAndStats(String moveAsString, BoardPiece[][] targetBoard) {
+	public void updateMoveAndStats(String moveAsString, Board targetBoard) {
 		int guessRow = Integer.parseInt(moveAsString.substring(0,1));
 		int guessCol = Integer.parseInt(moveAsString.substring(2));
 		
+		BoardPiece targetPiece = null;
+		try {
+			targetPiece = targetBoard.getPieceAt(new Coordinates(guessRow, guessCol));
+		} catch (Exception e) {
+			System.out.println("Invalid coordinates, this should not be reached");
+		}
+		
 		// Check if user hit or missed and update counters
-		if (targetBoard[guessRow][guessCol] == BoardPiece.SHIP) { // User hit
+		if (targetPiece == BoardPiece.SHIP) { // User hit
 			numHits++;
 			move = new Coordinates(guessRow,guessCol);
 		} else { // User missed
@@ -79,7 +87,7 @@ public class User extends Player {
 	 * @param targetBoard; an array containing the opponent's ship locations
 	 * @return a Coordinates object representing the location targeted by the user
 	 */
-	public Coordinates getMove(BoardPiece[][] targetBoard) {
+	public Coordinates getMove(Board targetBoard) {
 		return move;
 	}
 }

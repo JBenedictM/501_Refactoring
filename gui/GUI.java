@@ -3,7 +3,7 @@ package gui;
 import game.Game;
 import coordinates.Coordinates;
 import player.User;
-import board.BattleshipBoard;
+import board.*;
 import statistics.Statistics;
 import ships.Ship;
 
@@ -395,7 +395,7 @@ public class GUI extends JFrame implements Serializable {
                 	boardButton.setPreferredSize(BOARD_BUTTON_SIZE);
                 	
                 	// Set background based on hits/misses by opponent
-                	setButtonBackground(boardButton, boardObject, row, col, use);
+                	setButtonBackground(boardButton, boardObject, new Coordinates(row, col), use);
     					
                 	if (!use.equals("Ship")) { // Enable buttons for setup or for player to target
                 		boardButton.addActionListener(game);
@@ -443,30 +443,35 @@ public class GUI extends JFrame implements Serializable {
 	 * @param col; An int representing the target column
 	 * @param use; A String to determine if ship is displayed
 	 */
-	private void setButtonBackground(JButton boardButton, BattleshipBoard boardObject, int row, int col, String use) {
-		BoardPiece[][] board = boardObject.getBoard();
+	private void setButtonBackground(JButton boardButton, BattleshipBoard board, Coordinates coord, String use) {
+		BoardPiece targetPiece = null;
+		try {
+			targetPiece = board.getPieceAt(coord);
+		} catch (Exception e) {
+			System.out.println("Invalid coordinates, this should not be reached");
+		}
 		// Hits
-		if (board[row][col] == BoardPiece.HIT) {
+		if (targetPiece == BoardPiece.HIT) {
 			boardButton.setBackground(Color.RED);
 			boardButton.setOpaque(true);
 			boardButton.setEnabled(false);
 		} 
 		// Show players own ships
-		else if (board[row][col] == BoardPiece.SHIP && !use.equals("Target")) {
-			setAliveShipIcons(boardButton, boardObject, row, col);
+		else if (targetPiece == BoardPiece.SHIP && !use.equals("Target")) {
+			setAliveShipIcons(boardButton, board, coord);
 		}
 		// Dead
-		else if (board[row][col] == BoardPiece.DEAD) {
-			setDeadShipIcons(boardButton, boardObject, row, col);
+		else if (targetPiece == BoardPiece.DEAD) {
+			setDeadShipIcons(boardButton, board, coord);
 		}
 		// Misses
-		else if (board[row][col] == BoardPiece.MISS) {
+		else if (targetPiece == BoardPiece.MISS) {
 			boardButton.setBackground(Color.BLUE);
 			boardButton.setOpaque(true);
 			boardButton.setEnabled(false);
 		}
 		// Error message
-		else if (board[row][col] != BoardPiece.EMPTY && board[row][col] != BoardPiece.SHIP) {
+		else if (targetPiece != BoardPiece.EMPTY && targetPiece != BoardPiece.SHIP) {
 			exceptionMessage("Error changing button colour");
 		}
 	}
@@ -479,18 +484,18 @@ public class GUI extends JFrame implements Serializable {
 	 * @param row; The row that the button is assigned to
 	 * @param col; The column that the button is assigned to
 	 */
-	private void setAliveShipIcons(JButton boardButton, BattleshipBoard boardObject, int row, int col) {
+	private void setAliveShipIcons(JButton boardButton, BattleshipBoard boardObject, Coordinates coord) {
 		// Determine the ship in this location
 		Ship aShip = boardObject.getStarShip();
-		if (boardObject.getBattleCruiser().indexOfLocation(row, col) != -1 && boardObject.getBattleCruiser().isAlive()) {
+		if (boardObject.getBattleCruiser().indexOfLocation(coord) != -1 && boardObject.getBattleCruiser().isAlive()) {
 			aShip = boardObject.getBattleCruiser();
-		} else if (boardObject.getAssaultCarrier().indexOfLocation(row, col) != -1 && boardObject.getAssaultCarrier().isAlive()) {
+		} else if (boardObject.getAssaultCarrier().indexOfLocation(coord) != -1 && boardObject.getAssaultCarrier().isAlive()) {
 			aShip = boardObject.getAssaultCarrier();
-		} else if (boardObject.getOrbiter().indexOfLocation(row, col) != -1 && boardObject.getOrbiter().isAlive()) {
+		} else if (boardObject.getOrbiter().indexOfLocation(coord) != -1 && boardObject.getOrbiter().isAlive()) {
 			aShip = boardObject.getOrbiter();
 		}
 		
-		setShipIcons(aShip, boardButton, row, col);
+		setShipIcons(aShip, boardButton, coord);
 	}
 	
 	/*
@@ -501,18 +506,18 @@ public class GUI extends JFrame implements Serializable {
 	 * @param row; The row that the button is assigned to
 	 * @param col; The column that the button is assigned to
 	 */
-	private void setDeadShipIcons(JButton boardButton, BattleshipBoard boardObject, int row, int col) {
+	private void setDeadShipIcons(JButton boardButton, BattleshipBoard boardObject, Coordinates coord) {
 		// Determine the ship in this location
 		Ship aShip = boardObject.getStarShip();
-		if (boardObject.getBattleCruiser().indexOfLocation(row, col) != -1) {
+		if (boardObject.getBattleCruiser().indexOfLocation(coord) != -1) {
 			aShip = boardObject.getBattleCruiser();
-		} else if (boardObject.getAssaultCarrier().indexOfLocation(row, col) != -1) {
+		} else if (boardObject.getAssaultCarrier().indexOfLocation(coord) != -1) {
 			aShip = boardObject.getAssaultCarrier();
-		} else if (boardObject.getOrbiter().indexOfLocation(row, col) != -1) {
+		} else if (boardObject.getOrbiter().indexOfLocation(coord) != -1) {
 			aShip = boardObject.getOrbiter();
 		}
 		
-		setShipIcons(aShip, boardButton, row, col);
+		setShipIcons(aShip, boardButton, coord);
 	}
 	
 	/*
@@ -523,11 +528,11 @@ public class GUI extends JFrame implements Serializable {
 	 * @param row; The row that the button is assigned to
 	 * @param col; The column that the button is assigned to
 	 */
-	private void setShipIcons(Ship aShip, JButton boardButton, int row, int col) {
+	private void setShipIcons(Ship aShip, JButton boardButton, Coordinates coord) {
 		// Information used to determine the path of the image
 		String shipName = aShip.getShipName();
 		String orientation = aShip.getOrientation();
-		int index = aShip.indexOfLocation(row, col);
+		int index = aShip.indexOfLocation(coord);
 		String path;
 		if (aShip.isAlive()) {
 			path = "./images/alive/" + shipName + "_" + orientation + index + ".png";
@@ -827,12 +832,17 @@ public class GUI extends JFrame implements Serializable {
 	 * @param targetBoard; an array containing the opponent's ship locations
 	 * @param name; the name of the player
 	 */
-	public void displayPlayer1Result(Coordinates move, BoardPiece[][] targetBoard, String name) {
-		if (targetBoard[move.getRow()][move.getCol()] == BoardPiece.SHIP) {
-			messageBox1.setText(name + " got a hit!");
-		} else {
-			messageBox1.setText(name + " missed.");
+	public void displayPlayer1Result(Coordinates move, Board targetBoard, String name) {
+		try {
+			if (targetBoard.getPieceAt(move) == BoardPiece.SHIP) {
+				messageBox1.setText(name + " got a hit!");
+			} else {
+				messageBox1.setText(name + " missed.");
+			}
+		} catch (Exception e) {
+			System.out.println("Invalid coordinates, this should not be reached");
 		}
+		
 	}
 	
 	/**
@@ -841,12 +851,17 @@ public class GUI extends JFrame implements Serializable {
 	 * @param targetBoard; an array containing the opponent's ship locations
 	 * @param name; the name of the player
 	 */
-	public void displayPlayer2Result(Coordinates move, BoardPiece[][] targetBoard, String name) {
-		if (targetBoard[move.getRow()][move.getCol()] == BoardPiece.SHIP) {
-			messageBox2.setText(name + " got a hit!");
-		} else {
-			messageBox2.setText(name + " missed.");
+	public void displayPlayer2Result(Coordinates move, Board targetBoard, String name) {
+		try {
+			if (targetBoard.getPieceAt(move) == BoardPiece.SHIP) {
+				messageBox2.setText(name + " got a hit!");
+			} else {
+				messageBox2.setText(name + " missed.");
+			}
+		} catch(Exception e) {
+			System.out.println("Invalid coordinate, this should not be reached");
 		}
+		
 	}
 	
 	/**
