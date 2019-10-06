@@ -151,7 +151,7 @@ public class Game implements ActionListener, Serializable {
 		
 		// Modify the board
 		try {
-			player2Board.modifyBoard(move);
+			player2Board.targetCoordinate(move);
 		} catch (Exception exception) {
 			GUI.exceptionMessage(exception.getMessage());
 		}
@@ -167,7 +167,7 @@ public class Game implements ActionListener, Serializable {
 		
 		// Modify the board
 		try {
-			player1Board.modifyBoard(move);
+			player1Board.targetCoordinate(move);
 		} catch (Exception exception) {
 			GUI.exceptionMessage(exception.getMessage());
 		}
