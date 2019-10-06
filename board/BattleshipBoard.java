@@ -38,7 +38,7 @@ public class BattleshipBoard extends Board{
 	 * @param inputBoard; board pointer
 	 */
 	public BattleshipBoard(String title) {
-		super(9);
+		super(9, 9);
 		setTitle(title);
 		
 		this.shipsAlive = 4;
@@ -46,6 +46,17 @@ public class BattleshipBoard extends Board{
 		this.battle = new Ship("Battle Cruiser", 4);
 		this.assault = new Ship("Assault Carrier", 3);
 		this.orbiter = new Ship("Orbiter", 2);
+	}
+	
+	public BattleshipBoard(BattleshipBoard boardClone) {
+		super(boardClone.getBoardArray());
+		setTitle(boardClone.getTitle());
+		
+		this.shipsAlive = boardClone.getShipsAlive();
+		this.star = boardClone.getStarShip();
+		this.battle = boardClone.getBattleCruiser();
+		this.assault = boardClone.getAssaultCarrier();
+		this.orbiter = boardClone.getOrbiter();
 	}
 	
 	/**
@@ -264,6 +275,10 @@ public class BattleshipBoard extends Board{
 		
 		// return the overlap boolean
 		return overlap;
+	}
+	
+	public Board getBoard() {
+		return (Board)new BattleshipBoard(this);
 	}
 	
 	/*

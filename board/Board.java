@@ -21,21 +21,26 @@ public abstract class Board implements Serializable {
 	
 	// Instance Variables 
 	private BoardPiece[][] board;
+	private int row;
+	private int column;
 	
 	/**
 	 * initializes a new 9x9 empty board
 	 */
 	public Board() {
-		this(9);
+		this(9, 9);
 	}
 	
 	/**
 	 * initializes a new nxn empty board
 	 */
-	public Board(int dimension) {
-		this.board = new BoardPiece[dimension][dimension];
-		for (int i=0; i<dimension; i++) {
-			for (int j=0; j<dimension; j++) {
+	public Board(int row, int column) {
+		this.row = row;
+		this.column = column;
+		this.board = new BoardPiece[this.row][this.column];
+		
+		for (int i=0; i<column; i++) {
+			for (int j=0; j<row; j++) {
 				this.board[i][j] = BoardPiece.EMPTY;
 			}
 		}
@@ -47,6 +52,8 @@ public abstract class Board implements Serializable {
 	 */
 	public Board (BoardPiece[][] inputBoard) {
 		this.board = inputBoard.clone();
+		this.row = board[0].length;
+		this.column = board.length;
 	}
 	
 	
@@ -93,17 +100,34 @@ public abstract class Board implements Serializable {
 	 * 
 	 * @return tempBoard; A new copy of board
 	 */
-	public BoardPiece[][] getBoard() {
+	public BoardPiece[][] getBoardArray() {
 		// Create a new 2d char array 
-		BoardPiece[][] tempBoard = new BoardPiece[9][9];
+		BoardPiece[][] tempBoard = new BoardPiece[this.row][this.column];
 		
 		// Loop to copy contents of instance variable 
-		for (int row = 0; row < 9; row++) {
-			for (int col = 0; col < 9; col++) {
-				tempBoard[row][col] = board[row][col];
+		for (int i = 0; i < this.row; i++) {
+			for (int j = 0; j < this.column; j++) {
+				tempBoard[i][j] = board[i][j];
 			}
 		}
 		return tempBoard;
 	}
+	
+	/**
+	 * 
+	 * @return row dimension of the board
+	 */
+	public int getRow() {
+		return this.row;
+	}
+	
+	/**
+	 * 
+	 * @return column dimension of the board
+	 */
+	public int getColumn() {
+		return this.column;
+	}
+	
 	
 }
