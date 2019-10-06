@@ -27,18 +27,17 @@ public abstract class Player implements Serializable {
 	 * returns true if the coordinate is either empty or a ship, else it returns false
 	 */
 	public static boolean isLegalMove(Coordinates coord, BoardPiece[][] playerBoard) {
-		boolean validity = true;
 		if (!coord.isInBounds()) {
-			validity = false;
+			return false;
 		}
 		
 		int row = coord.getRow();
 		int col = coord.getCol();
 		if (playerBoard[row][col] != BoardPiece.SHIP && playerBoard[row][col] != BoardPiece.EMPTY) {
-			validity = false;
+			return false;
 		}
 		
-		return validity;
+		return true;
 	}
 	
 }

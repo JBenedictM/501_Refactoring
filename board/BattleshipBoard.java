@@ -1,5 +1,6 @@
 package board;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import board.Board.BoardPiece;
@@ -10,16 +11,17 @@ import ships.Ship;
 /**
  * Class representing a battleship game board
  * 
+ * Manages ships and ensures that they are correctly placed
+ * 
  * Will create the game board, and modify it's contents when setting ships
  * and showing hits/misses
- * Manages ships and ensures that they are correctly placed
  * 
  * Added method to change dead ships to appropriate constant 
  * 
  * @author Karndeep Dhami and Faiyaz Momen
  * @version date: Apr. 11, 2017
  */
-public class BattleshipBoard{
+public class BattleshipBoard implements Serializable{
 	private Board board;
 	private String title;
 	
@@ -61,12 +63,14 @@ public class BattleshipBoard{
 	}
 	
 	/**
-	 * Modifying boards and update ship counts
+	 * targets a coordinate 
+	 * updates board correctly based on the piece at the coordinate
+	 * coordinate can either land on a ship or miss
 	 * 
-	 * @param coordinate; A Coordinates Object used to get row and column of target
+	 * @param coordinate; A Coordinates Object of the target
 	 * @throws Exception; if Coordinates Object is out of the range of the board
 	 */
-	public void modifyBoard(Coordinates coordinates) throws Exception {
+	public void targetCoordinate(Coordinates coordinates) throws Exception {
 		int targetRow = coordinates.getRow(), targetColumn = coordinates.getCol();
 
 		// Hits
@@ -273,6 +277,14 @@ public class BattleshipBoard{
 		
 		// return the overlap boolean
 		return overlap;
+	}
+	
+	public BoardPiece getBoardPieceAt(Coordinates coord) throws Exception {
+		return board.getPieceAt(coord);
+	}
+	
+	public void setBoardPieceAt(BoardPiece new_piece, Coordinates coord) throws Exception {
+		board.setPieceAt(new_piece, coord);
 	}
 	
 	public Board getBoard() {

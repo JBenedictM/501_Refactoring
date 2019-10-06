@@ -39,8 +39,8 @@ public class Board implements Serializable {
 		this.column = column;
 		this.board = new BoardPiece[this.row][this.column];
 		
-		for (int i=0; i<column; i++) {
-			for (int j=0; j<row; j++) {
+		for (int i=0; i<row; i++) {
+			for (int j=0; j<column; j++) {
 				this.board[i][j] = BoardPiece.EMPTY;
 			}
 		}
@@ -51,9 +51,15 @@ public class Board implements Serializable {
 	 * @param inputBoard - boardPiece 2d array
 	 */
 	public Board (BoardPiece[][] inputBoard) {
-		this.board = inputBoard.clone();
-		this.row = board[0].length;
-		this.column = board.length;
+		this.row = inputBoard[0].length;
+		this.column = inputBoard.length;
+		this.board = new BoardPiece[this.row][this.column];
+		
+		for (int i=0; i<this.row; i++) {
+			for (int j=0; j<this.column; j++) {
+				this.board[i][j] = inputBoard[i][j];
+			}
+		}
 	}
 	
 	public Board (Board inputBoard) {
