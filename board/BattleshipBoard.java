@@ -5,7 +5,13 @@ import java.util.Random;
 
 import board.Board.BoardPiece;
 import coordinates.Coordinates;
+import ships.AssaultCarrier;
+import ships.BattleCruiser;
+import ships.Orbiter;
 import ships.Ship;
+import ships.StarShip;
+//enum for ship orientations
+import ships.Ship.Orientation;
 
 
 /**
@@ -45,10 +51,10 @@ public class BattleshipBoard implements Serializable{
 		setTitle(title);
 		
 		this.shipsAlive = 4;
-		this.star = new Ship("Star Ship", 5);
-		this.battle = new Ship("Battle Cruiser", 4);
-		this.assault = new Ship("Assault Carrier", 3);
-		this.orbiter = new Ship("Orbiter", 2);
+		this.star = new StarShip();
+		this.battle = new BattleCruiser();
+		this.assault = new AssaultCarrier();
+		this.orbiter = new Orbiter();
 	}
 	
 	public BattleshipBoard(BattleshipBoard boardClone) {
@@ -108,7 +114,7 @@ public class BattleshipBoard implements Serializable{
 				count++;
 			}
 			else {
-				setShipChar(element.getShipLength(), element.getLocation(), BoardPiece.DEAD);
+				setShipChar(element.getShipSize(), element.getLocation(), BoardPiece.DEAD);
 			}
 		}
 
@@ -146,7 +152,7 @@ public class BattleshipBoard implements Serializable{
 	private void autoPlaceShip(Ship ship) {
 		Random generator = new Random();
 		int direction, row, col;
-		String shipDir;
+		Orientation shipDir;
 		boolean inputValid = false;
 		
 		// Loop that automatically places ships
@@ -156,13 +162,13 @@ public class BattleshipBoard implements Serializable{
 			row = generator.nextInt(8) + 1;
 			col = generator.nextInt(8) + 1;
 			if (direction == 0) {
-				shipDir = "left";
+				shipDir = Orientation.LEFT;
 			} else if (direction == 1) {
-				shipDir = "right";
+				shipDir = Orientation.RIGHT;
 			} else if (direction == 2) {
-				shipDir = "up";
+				shipDir = Orientation.UP;
 			} else {
-				shipDir = "down";
+				shipDir = Orientation.DOWN;
 			}
 			ship.setOrientation(shipDir);
 			ship.placeShip(row, col);
@@ -170,8 +176,10 @@ public class BattleshipBoard implements Serializable{
 			inputValid = !ship.checkOutOfBounds() && !checkShipOverlap(ship);
 		}
 		// Places ships onto the user's board
-		ship.setAlive(true);
-		setShipChar(ship.getShipLength(), ship.getLocation(), BoardPiece.SHIP);
+		
+		// TODO : see if setAlive() is relevant
+//		ship.setAlive(true);
+		setShipChar(ship.getShipSize(), ship.getLocation(), BoardPiece.SHIP);
 	}
 	
 	/**
@@ -203,19 +211,19 @@ public class BattleshipBoard implements Serializable{
 		}
 		
 		// Determine the ship object
-		if (shipSelection.equals(star.getShipName())) {
+		if (shipSelection.equals(star.getName())) {
 			ship = star;
-		} else if (shipSelection.equals(battle.getShipName())) {
+		} else if (shipSelection.equals(battle.getName())) {
 			ship = battle;
-		} else if (shipSelection.equals(assault.getShipName())) {
+		} else if (shipSelection.equals(assault.getName())) {
 			ship = assault;
-		} else if (shipSelection.equals(orbiter.getShipName())) {
+		} else if (shipSelection.equals(orbiter.getName())) {
 			ship = orbiter;
 		}
 		
 		// Determine whether to rotate the ship
 		if (actionCommand.substring(0, 6).equals("rotate")) { // When String formula is <rotate>|<shipName>,<boardTitle>
-			ship.rotateShip();
+			ship.rotateShipClockwise90();
 			row = ship.getLocation()[0].getRow();
 			col = ship.getLocation()[0].getCol();
 		}
@@ -233,9 +241,9 @@ public class BattleshipBoard implements Serializable{
 	 */
 	private void setValidShip(Ship ship, int row, int col) throws Exception {
 		// remove the ship if already placed
-		if (ship.isAlive()) {
-			setShipChar(ship.getShipLength(), ship.getLocation(), BoardPiece.EMPTY);
-			ship.setAlive(false);
+		if (ship.isShipOnBoard()) {
+			setShipChar(ship.getShipSize(), ship.getLocation(), BoardPiece.EMPTY);
+			ship.removeShipFromBoard();
 		}
 		// set ship's location
 		ship.placeShip(row, col);
@@ -244,8 +252,8 @@ public class BattleshipBoard implements Serializable{
 		if (!ship.checkOutOfBounds()) {
             if (!checkShipOverlap(ship)) {
 				// Places ships onto the user's board
-				ship.setAlive(true);
-				setShipChar(ship.getShipLength(), ship.getLocation(), BoardPiece.SHIP);
+				ship.setShipOnBoard();
+				setShipChar(ship.getShipSize(), ship.getLocation(), BoardPiece.SHIP);
 			} else { // If the ship overlaps with another
 				throw new Exception("You have overlapped with another Ship!");
 			}
@@ -263,7 +271,7 @@ public class BattleshipBoard implements Serializable{
 		boolean overlap = false;
 		
 		// Check if another ship already occupies one of the ship's locations
-		for (int index = 0; index < ship.getShipLength(); index++) {
+		for (int index = 0; index < ship.getShipSize(); index++) {
 			try {
 				if (board.getPieceAt(ship.getLocation()[index]) == BoardPiece.SHIP) {
 					overlap = true;
@@ -320,28 +328,28 @@ public class BattleshipBoard implements Serializable{
 	 * @return star; A copy of object star of type Ship
 	 */
 	public Ship getStarShip() {
-		return new Ship(star);
+		return new StarShip((StarShip) star);
 	}
 	
 	/**
 	 * @return battle; A copy of object battle of type Ship
 	 */
 	public Ship getBattleCruiser() {
-		return new Ship(battle);
+		return new BattleCruiser((BattleCruiser) battle);
 	}
 	
 	/**
 	 * @return assault; A copy of object assault of type Ship
 	 */
 	public Ship getAssaultCarrier() {
-		return new Ship(assault);
+		return new AssaultCarrier((AssaultCarrier) assault);
 	}
 	
 	/**
 	 * @return orbiter; A copy of object orbiter of type Ship
 	 */
 	public Ship getOrbiter() {
-		return new Ship(orbiter);
+		return new Orbiter((Orbiter) orbiter);
 	}
 	
 	/**

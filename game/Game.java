@@ -89,7 +89,7 @@ public class Game implements ActionListener, Serializable {
 		player1Board = new BattleshipBoard("Player 1");
 		player2Board = new BattleshipBoard("Player 2");
 		
-		gui.shipSetupScreen(this, player1Board, player1Board.getStarShip().getShipName());
+		gui.shipSetupScreen(this, player1Board, player1Board.getStarShip().getName());
 	}
 	
 	// Finish a game of player vs. player
@@ -122,7 +122,7 @@ public class Game implements ActionListener, Serializable {
 		player1Board = new BattleshipBoard("Player");
 		player2Board = new BattleshipBoard("Computer");
 		
-		gui.shipSetupScreen(this, player1Board, player1Board.getStarShip().getShipName());
+		gui.shipSetupScreen(this, player1Board, player1Board.getStarShip().getName());
 	}
 	
 	// Finish a game of player vs. computer
@@ -246,7 +246,7 @@ public class Game implements ActionListener, Serializable {
 			}
 			playerVsAI(diff); // Get first letter
 		} else if (actionCommand.equals("Player 1")) { // Proceed to player 2 setup
-			gui.shipSetupScreen(this, player2Board, player2Board.getStarShip().getShipName());
+			gui.shipSetupScreen(this, player2Board, player2Board.getStarShip().getName());
 		} else if (actionCommand.equals("Player")) { // Setup computer board and proceed to game
 			player2Board.autoShipSetup();
 			gui.playerVsAISetup(this);

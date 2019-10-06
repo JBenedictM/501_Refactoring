@@ -10,34 +10,40 @@ import java.io.Serializable;
  * @author Faiyaz and Andy
  * @version Date modified: April 11, 2017
  */
-public class Ship implements Serializable {
+public abstract class Ship implements Serializable {
 	
-	private String shipName, orientation;
-	private int shipLength;
+	public enum Orientation {
+		RIGHT, LEFT, UP, DOWN;
+	}
+	
+	private String shipName;
+	private Orientation orientation;
+	private int shipSize;
 	private Coordinates[] location;
-	private int units;
-	private boolean alive;
+	private int unitsAlive;
+	private boolean onBoard;
+
 	
 	/**
 	 * A constructor that initializes:
 	 * - shipName; name of the ship
 	 * - ShipLength; length of the ship
 	 * - orientation; the orientation of the ship
-	 * - units; the health of the ship
-	 * - isAlive; If the ship alive
+	 * - shipUnitsAlive; the health of the ship
 	 * - location; An array of Coordinate objects
 	 * and add a new Coordinate up to the length of the ship
 	 * @param shipName; The name of the ship of type String
 	 * @param shipLength; the length of the ship of type int
 	 */
-	public Ship(String shipName, int shipLength) {
+	public Ship(String shipName, int shipSize) {
 		this.shipName = shipName;
-		this.shipLength = shipLength;
-		this.orientation = "right";
-		this.units = shipLength;
-		this.alive = false;
-		location = new Coordinates[shipLength];
-		for (int index = 0; index < shipLength; index++) {
+		this.shipSize = shipSize;
+		this.orientation = Orientation.RIGHT;
+		this.unitsAlive = this.shipSize;
+		this.onBoard = false;
+		
+		location = new Coordinates[shipSize];
+		for (int index = 0; index < shipSize; index++) {
 			location[index] = new Coordinates(0,0);
 		}	
 	}
@@ -48,12 +54,12 @@ public class Ship implements Serializable {
 	 * @param ship; an object of type Ship
 	 */
 	public Ship(Ship ship) {
-		this.shipName = ship.getShipName();
+		this.shipName = ship.getName();
 		this.orientation = ship.getOrientation();
-		this.shipLength = ship.getShipLength();
+		this.shipSize = ship.getShipSize();
 		this.location = ship.getLocation();
-		this.units = ship.getUnits();
-		this.alive = ship.isAlive();
+		this.unitsAlive = ship.getUnitsAlive();
+		this.onBoard = ship.isShipOnBoard();
 	}
 	
 	/**
@@ -64,12 +70,23 @@ public class Ship implements Serializable {
 	 */
 	public void placeShip(int row, int col) {
 		// Get the new location 
-		Coordinates[] newLocation = createNewLocation(row,col);
+		Coordinates[] newLocation = getShipCoordinates(row,col);
 		// for each index input new Coordinates
-		for (int index = 0; index < shipLength; index++) {
+		for (int index = 0; index < shipSize; index++) {
 			location[index] = newLocation[index];
 		}
 	}
+	
+	/**
+	 * returns ship coordinates at the specified location
+	 * this method defines the shape of the ship 
+	 * and its appearance relative to its orientation
+	 * @param row - array index
+	 * @param col - array index
+	 * @return - Coordinates[] where the the whole ship would be
+	 */
+	protected abstract Coordinates[] getShipCoordinates(int row, int col);
+	
 	
 	/*
 	 * Returns a Coordinates array of the current orientation
@@ -78,41 +95,41 @@ public class Ship implements Serializable {
 	 * @param col; An integer col used as a reference point for the ship
 	 * @return newLocation; A Coordinates array of the current orientation
 	 */
-	private Coordinates[] createNewLocation(int row, int col) {
-		Coordinates[] newLocation = new Coordinates[5];
-		Coordinates center = new Coordinates(row,col);
-		Coordinates up = new Coordinates(row - 1,col);
-		Coordinates down = new Coordinates(row + 1,col);
-		Coordinates right = new Coordinates(row,col + 1);
-		Coordinates left = new Coordinates(row,col - 1);
-		// Place Coordinates depending on the current Orientation
-		if (getOrientation().equals("down")) {
-			newLocation[0] = center;
-			newLocation[1] = down;
-			newLocation[2] = left;
-			newLocation[3] = right;
-			newLocation[4] = up;
-		} else if (getOrientation().equals("up")) {
-			newLocation[0] = center;
-			newLocation[1] = up;
-			newLocation[2] = right;
-			newLocation[3] = left;
-			newLocation[4] = down;
-		} else if (getOrientation().equals("right")) {
-			newLocation[0] = center;
-			newLocation[1] = right;
-			newLocation[2] = down;
-			newLocation[3] = up;
-			newLocation[4] = left;
-		} else if (getOrientation().equals("left")) {
-			newLocation[0] = center;
-			newLocation[1] = left;
-			newLocation[2] = up;
-			newLocation[3] = down;
-			newLocation[4] = right;
-		}
-		return newLocation;
-	}
+//	private Coordinates[] createNewLocation(int row, int col) {
+//		Coordinates[] newLocation = new Coordinates[5];
+//		Coordinates center = new Coordinates(row,col);
+//		Coordinates up = new Coordinates(row - 1,col);
+//		Coordinates down = new Coordinates(row + 1,col);
+//		Coordinates right = new Coordinates(row,col + 1);
+//		Coordinates left = new Coordinates(row,col - 1);
+//		// Place Coordinates depending on the current Orientation
+//		if (getOrientation().equals("down")) {
+//			newLocation[0] = center;
+//			newLocation[1] = down;
+//			newLocation[2] = left;
+//			newLocation[3] = right;
+//			newLocation[4] = up;
+//		} else if (getOrientation().equals("up")) {
+//			newLocation[0] = center;
+//			newLocation[1] = up;
+//			newLocation[2] = right;
+//			newLocation[3] = left;
+//			newLocation[4] = down;
+//		} else if (getOrientation().equals("right")) {
+//			newLocation[0] = center;
+//			newLocation[1] = right;
+//			newLocation[2] = down;
+//			newLocation[3] = up;
+//			newLocation[4] = left;
+//		} else if (getOrientation().equals("left")) {
+//			newLocation[0] = center;
+//			newLocation[1] = left;
+//			newLocation[2] = up;
+//			newLocation[3] = down;
+//			newLocation[4] = right;
+//		}
+//		return newLocation;
+//	}
 	
 	/**
 	 * Check if ship is within boundaries
@@ -122,7 +139,7 @@ public class Ship implements Serializable {
 		boolean outOfBounds = false;
 		
 		// if the value is in bounds for every coordinate in location
-		for (int index = 0; index < shipLength; index++) {
+		for (int index = 0; index < shipSize; index++) {
 			if (!location[index].isInBounds()) {
 				outOfBounds = true;
 			}
@@ -138,15 +155,17 @@ public class Ship implements Serializable {
 	 */
 	public void hitShip(int row, int col) {
 		// decrements the units
-		for (int index = 0; index < shipLength; index++) {
+		for (int index = 0; index < shipSize; index++) {
 			if (location[index].getRow() == row && location[index].getCol() == col) {
-				units--;
+				unitsAlive--;
 			}
 		}
-		// checks if object is still alive
-		if (units == 0) {
-			this.setAlive(false);
-		}
+		
+		
+//		// checks if object is still alive
+//		if (unitsAlive == 0) {
+//			this.setAlive(false);
+//		}
 	}
 	
 	/**
@@ -156,7 +175,7 @@ public class Ship implements Serializable {
 	 */
 	public int indexOfLocation(Coordinates coord) {
 		int indexNum = -1;
-		for (int index = 0; index < shipLength; index++) {
+		for (int index = 0; index < shipSize; index++) {
 			if (location[index].equals(coord)) {
 				indexNum = index;
 			}
@@ -164,20 +183,13 @@ public class Ship implements Serializable {
 		return indexNum;
 	}
 	
-	/**
-	 * Gets the ship's name
-	 * @return returns the name of the ship as a string
-	 */
-	public String getShipName() {
-		return shipName;
-	}
 	
 	/**
 	 * gets the length of the ship
 	 * @return returns the length as an integer
 	 */
-	public int getShipLength() {
-		return shipLength;
+	public int getShipSize() {
+		return shipSize;
 	}
 	
 	/**
@@ -186,9 +198,9 @@ public class Ship implements Serializable {
 	 * @return returns the clone array as an integer
 	 */
 	public Coordinates[] getLocation() {
-		Coordinates[] newLocation = new Coordinates[shipLength];
+		Coordinates[] newLocation = new Coordinates[shipSize];
 		
-		for (int index = 0; index < shipLength; index++) {
+		for (int index = 0; index < shipSize; index++) {
 			newLocation[index] = location[index];
 		}
 		return newLocation;
@@ -198,7 +210,7 @@ public class Ship implements Serializable {
 	 * Returns the orientation
 	 * @return orientation of type String
 	 */
-	public String getOrientation() {
+	public Orientation getOrientation() {
 		return orientation;
 	}
 	
@@ -206,55 +218,92 @@ public class Ship implements Serializable {
 	 * Sets the orientation
 	 * @param orientation; String orientation
 	 */
-	public void setOrientation(String orientation) {
+	public void setOrientation(Orientation orientation) {
 		this.orientation = orientation;
 	}
 	
 	/**
 	 * Changes the orientation of the ship
 	 */
-	public void rotateShip() {
+	public void rotateShipClockwise90() {
 		// Rotate the ship 90 degrees clockwise
 		switch (orientation) {
-			case "right":
-				orientation = "down";
+			case RIGHT:
+				orientation = Orientation.DOWN;
 				break;
-			case "down":
-				orientation = "left";
+			case DOWN:
+				orientation = Orientation.LEFT;
 				break;
-			case "left":
-				orientation = "up";
+			case LEFT:
+				orientation = Orientation.UP;
 				break;
-			case "up":
-				orientation = "right";
+			case UP:
+				orientation = Orientation.RIGHT;
 				break;
-			default:
-				orientation = orientation;
+				
+				
+//			default:
+//				orientation = orientation;
 		}
+	}
+	
+	/**
+	 * returns the name of the ship's kind
+	 * needed to identify different ships in the code
+	 * @return - the ship's kind in string
+	 */
+	public String getName() {
+		return this.shipName;
 	}
 	
 	/**
 	 * Returns the number of units
 	 * @return units; number units of type int
 	 */
-	public int getUnits() {
-		return units;
+	public int getUnitsAlive() {
+		return unitsAlive;
+	}
+	
+	/**
+	 * 
+	 * @return - size of the ship
+	 */
+	public int getSize() {
+		return this.shipSize;
 	}
 
 	
 	/**
-	 * Returns a boolean of alive
-	 * @return isAlive; of type boolean
+	 * 
+	 * @return - true if the ship still has units that are alive, otherwise false
 	 */
 	public boolean isAlive() {
-		return alive;
+		
+		if (unitsAlive != 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
-	/**
-	 * Sets the variable alive of type boolean
-	 * @param isAlive; of type boolean
-	 */
-	public void setAlive(boolean isAlive) {
-		this.alive = isAlive;
+	public boolean isShipOnBoard() {
+		return this.onBoard;
 	}
+	
+	public void removeShipFromBoard() {
+		this.onBoard = false;
+	}
+	
+	public void setShipOnBoard() {
+		this.onBoard = true;
+	}
+
+//	
+//	/**
+//	 * Sets the variable alive of type boolean
+//	 * @param isAlive; of type boolean
+//	 */
+//	public void setAlive(boolean isAlive) {
+//		this.alive = isAlive;
+//	}
 }

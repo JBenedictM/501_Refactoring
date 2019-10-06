@@ -6,6 +6,7 @@ import player.User;
 import board.*;
 import statistics.Statistics;
 import ships.Ship;
+import ships.Ship.Orientation;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -530,8 +531,8 @@ public class GUI extends JFrame implements Serializable {
 	 */
 	private void setShipIcons(Ship aShip, JButton boardButton, Coordinates coord) {
 		// Information used to determine the path of the image
-		String shipName = aShip.getShipName();
-		String orientation = aShip.getOrientation();
+		String shipName = aShip.getName();
+		Orientation orientation = aShip.getOrientation();
 		int index = aShip.indexOfLocation(coord);
 		String path;
 		if (aShip.isAlive()) {
@@ -592,10 +593,10 @@ public class GUI extends JFrame implements Serializable {
 		
 		// Add setup components to shipLegend
 		addSetupButtons(game, aBoard, shipSelection, shipLegend);
-		addShipLabels(aBoard.getStarShip().getShipName(), shipLegend, 0, 0);
-		addShipLabels(aBoard.getBattleCruiser().getShipName(), shipLegend, 1, 0);
-		addShipLabels(aBoard.getAssaultCarrier().getShipName(), shipLegend, 0, 2);
-		addShipLabels(aBoard.getOrbiter().getShipName(), shipLegend, 1, 2);
+		addShipLabels(aBoard.getStarShip().getName(), shipLegend, 0, 0);
+		addShipLabels(aBoard.getBattleCruiser().getName(), shipLegend, 1, 0);
+		addShipLabels(aBoard.getAssaultCarrier().getName(), shipLegend, 0, 2);
+		addShipLabels(aBoard.getOrbiter().getName(), shipLegend, 1, 2);
 		addShipButton(game, aBoard.getTitle(), shipSelection, shipLegend, aBoard.getStarShip(), 0, 1);
 		addShipButton(game, aBoard.getTitle(), shipSelection, shipLegend, aBoard.getBattleCruiser(), 1, 1);
 		addShipButton(game, aBoard.getTitle(), shipSelection, shipLegend, aBoard.getAssaultCarrier(), 0, 3);
@@ -677,10 +678,10 @@ public class GUI extends JFrame implements Serializable {
 		button.setPreferredSize(new Dimension(buttonSize));
 		button.setBorderPainted(false);
 		button.addActionListener(game);
-		button.setActionCommand("|" + ship.getShipName() + "," + title);
+		button.setActionCommand("|" + ship.getName() + "," + title);
 		
 		// Setting the icon if it exists
-		String path = "./images/" + ship.getShipName() + "_" + ship.getOrientation() + ".png";
+		String path = "./images/" + ship.getName() + "_" + ship.getOrientation() + ".png";
 		File image = new File(path);
 		if (image.exists()) {
 			button.setIcon(new ImageIcon(path));
@@ -691,7 +692,7 @@ public class GUI extends JFrame implements Serializable {
 		}
 		
 	    // Creates border if ship is clicked on
-	    if (shipSelection.equals(ship.getShipName())) { // If the Ship is clicked on
+	    if (shipSelection.equals(ship.getName())) { // If the Ship is clicked on
 	    	button.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.RED));
 	    	button.setBorderPainted(true);
 	    }
