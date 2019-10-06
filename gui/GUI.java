@@ -443,10 +443,10 @@ public class GUI extends JFrame implements Serializable {
 	 * @param col; An int representing the target column
 	 * @param use; A String to determine if ship is displayed
 	 */
-	private void setButtonBackground(JButton boardButton, BattleshipBoard board, Coordinates coord, String use) {
+	private void setButtonBackground(JButton boardButton, BattleshipBoard battleshipBoard, Coordinates coord, String use) {
 		BoardPiece targetPiece = null;
 		try {
-			targetPiece = board.getPieceAt(coord);
+			targetPiece = battleshipBoard.getBoard().getPieceAt(coord);
 		} catch (Exception e) {
 			System.out.println("Invalid coordinates, this should not be reached");
 		}
@@ -458,11 +458,11 @@ public class GUI extends JFrame implements Serializable {
 		} 
 		// Show players own ships
 		else if (targetPiece == BoardPiece.SHIP && !use.equals("Target")) {
-			setAliveShipIcons(boardButton, board, coord);
+			setAliveShipIcons(boardButton, battleshipBoard, coord);
 		}
 		// Dead
 		else if (targetPiece == BoardPiece.DEAD) {
-			setDeadShipIcons(boardButton, board, coord);
+			setDeadShipIcons(boardButton, battleshipBoard, coord);
 		}
 		// Misses
 		else if (targetPiece == BoardPiece.MISS) {

@@ -19,7 +19,8 @@ import ships.Ship;
  * @author Karndeep Dhami and Faiyaz Momen
  * @version date: Apr. 11, 2017
  */
-public class BattleshipBoard extends Board{
+public class BattleshipBoard{
+	private Board board;
 	private String title;
 	
 	// number of ships alive
@@ -38,7 +39,7 @@ public class BattleshipBoard extends Board{
 	 * @param inputBoard; board pointer
 	 */
 	public BattleshipBoard(String title) {
-		super(9, 9);
+		this.board = new Board(9, 9);
 		setTitle(title);
 		
 		this.shipsAlive = 4;
@@ -49,7 +50,7 @@ public class BattleshipBoard extends Board{
 	}
 	
 	public BattleshipBoard(BattleshipBoard boardClone) {
-		super(boardClone.getBoardArray());
+		this.board = new Board(boardClone.getBoardArray());
 		setTitle(boardClone.getTitle());
 		
 		this.shipsAlive = boardClone.getShipsAlive();
@@ -69,15 +70,15 @@ public class BattleshipBoard extends Board{
 		int targetRow = coordinates.getRow(), targetColumn = coordinates.getCol();
 
 		// Hits
-		if (getPieceAt(coordinates) == BoardPiece.SHIP) {
-			setPieceAt(BoardPiece.HIT, coordinates);
+		if (board.getPieceAt(coordinates) == BoardPiece.SHIP) {
+			board.setPieceAt(BoardPiece.HIT, coordinates);
 			
 			// Update shipsAlive based on hits
 			numShipsAlive(targetRow, targetColumn);
 		} 
 		// Misses
-		else if (getPieceAt(coordinates) == BoardPiece.EMPTY) {
-			setPieceAt(BoardPiece.MISS, coordinates);
+		else if (board.getPieceAt(coordinates) == BoardPiece.EMPTY) {
+			board.setPieceAt(BoardPiece.MISS, coordinates);
 		} 
 		else {
 			throw new Exception("Error, coordinates out of range of board");
@@ -119,16 +120,13 @@ public class BattleshipBoard extends Board{
 	 * @param shipLocation; A Coordinates array of a ships location
 	 */
 	private void setShipChar(int shipLength, Coordinates[] shipLocation, BoardPiece new_piece) {
-		int shipRow, shipCol;
 		
 		// Extracts coordinates of the units of a ship
 		for (int index = 0; index < shipLength; index++) {
-			shipRow = shipLocation[index].getRow();
-			shipCol = shipLocation[index].getCol();
 			
 			try {
 				// Appends the units into the board
-				setPieceAt(new_piece, shipLocation[index]);
+				board.setPieceAt(new_piece, shipLocation[index]);
 			} catch (Exception e) {
 				System.out.println("Incorrect ship coordinates, this exception should never happen");
 			}
@@ -263,7 +261,7 @@ public class BattleshipBoard extends Board{
 		// Check if another ship already occupies one of the ship's locations
 		for (int index = 0; index < ship.getShipLength(); index++) {
 			try {
-				if (getPieceAt(ship.getLocation()[index]) == BoardPiece.SHIP) {
+				if (board.getPieceAt(ship.getLocation()[index]) == BoardPiece.SHIP) {
 					overlap = true;
 				}
 			} catch (Exception e) {
@@ -278,7 +276,16 @@ public class BattleshipBoard extends Board{
 	}
 	
 	public Board getBoard() {
-		return (Board)new BattleshipBoard(this);
+		return board.getBoard();
+	}
+	
+	/**
+	 * Create a new copy of the board instance variable
+	 * 
+	 * @return - copy of the underlying board array
+	 */
+	public BoardPiece[][] getBoardArray() {
+		return this.board.getBoardArray();
 	}
 	
 	/*

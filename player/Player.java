@@ -16,7 +16,7 @@ public abstract class Player implements Serializable {
 	
 	/**
 	 * Prompt user for input, validate input, tell user if they hit or if they missed
-	 * @param targetBoard; an array containing the opponent's ship locations
+	 * @param targetBoard; object containing the opponent's ship locations
 	 * @return a Coordinates object representing the location targeted by the user
 	 */
 	public abstract Coordinates getMove(Board targetBoard);

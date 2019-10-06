@@ -13,7 +13,7 @@ import ships.Ship;
  * @author Ben
  *
  */
-public abstract class Board implements Serializable {
+public class Board implements Serializable {
 	
 	public enum BoardPiece {
 		SHIP, EMPTY, HIT, MISS, DEAD;
@@ -56,6 +56,10 @@ public abstract class Board implements Serializable {
 		this.column = board.length;
 	}
 	
+	public Board (Board inputBoard) {
+		this(inputBoard.getBoardArray());
+	}
+	
 	
 	
 	/**
@@ -93,6 +97,10 @@ public abstract class Board implements Serializable {
 		} catch (Exception e) {
 			throw new Exception("Error, coordinates out of range of board");
 		}
+	}
+	
+	public Board getBoard() {
+		return new Board(this);
 	}
 	
 	/**

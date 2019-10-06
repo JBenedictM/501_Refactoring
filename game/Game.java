@@ -4,11 +4,11 @@ import gui.GUI;
 import coordinates.Coordinates;
 import player.Player;
 import player.User;
-import player.Computer;
+import player.AI;
 import board.BattleshipBoard;
 import statistics.Statistics;
 // enum imports
-import player.Computer.Difficulty;
+import player.AI.Difficulty;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -118,7 +118,7 @@ public class Game implements ActionListener, Serializable {
 	private void playerVsAI(Difficulty diff) {		
 		player1 = new User();
 			
-		player2 = new Computer(diff);
+		player2 = new AI(diff);
 		player1Board = new BattleshipBoard("Player");
 		player2Board = new BattleshipBoard("Computer");
 		
