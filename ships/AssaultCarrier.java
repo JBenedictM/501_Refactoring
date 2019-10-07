@@ -9,11 +9,25 @@ public class AssaultCarrier extends Ship{
 		super("Assault Carrier", 3);
 	}
 	
+	/**
+	 * clone constructor
+	 * @param otherBattleCruiser - object that will be cloned
+	 */
 	public AssaultCarrier(AssaultCarrier otherAC) {
 		super((Ship)otherAC);
 	}
 	
 	
+	
+	/**
+	 * Returns ship coordindates with the shape of an "Assault Carrier"
+	 * 		
+	 * 	    c x   
+	 *      x
+	 * ship will be centered on the given coordinate
+	 * Orientation is also factored in
+	 * 
+	 */
 	@Override
 	protected Coordinates[] getShipCoordinates(int row, int col) {
 		Coordinates[] newLocation = new Coordinates[super.getSize()];

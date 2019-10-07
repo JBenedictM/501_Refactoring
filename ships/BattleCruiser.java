@@ -14,10 +14,24 @@ public class BattleCruiser extends Ship{
 		super("Battle Cruiser", 4);
 	}
 	
+	/**
+	 * clone constructor
+	 * @param otherBattleCruiser - object that will be cloned
+	 */
 	public BattleCruiser(BattleCruiser otherBattleCruiser) {
 		super((Ship)otherBattleCruiser);
 	}
 	
+	
+	/**
+	 * Returns ship coordindates with the shape of a "Battle Cruiser"
+	 * 		x
+	 * 	    c x   
+	 *      x
+	 * ship will be centered on the given coordinate
+	 * Orientation is also factored in
+	 * 
+	 */
 	@Override
 	protected Coordinates[] getShipCoordinates(int row, int col) {
 		Coordinates[] newLocation = new Coordinates[super.getSize()];

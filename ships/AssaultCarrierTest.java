@@ -95,7 +95,7 @@ public class AssaultCarrierTest {
 		Coordinates[] location = ac.getLocation();
 		
 		// ship must look like
-		//  x x
+		//  c x
 		//  x
 		Coordinates center = new Coordinates(4, 4);
 		Coordinates right = new Coordinates(4, 5);
@@ -117,7 +117,7 @@ public class AssaultCarrierTest {
 		
 		// ship must look like
 		//    x
-		//  x x
+		//  x c
 		Coordinates center = new Coordinates(4, 4);
 		Coordinates left = new Coordinates(4, 3);
 		Coordinates up = new Coordinates(3, 4);
@@ -138,7 +138,7 @@ public class AssaultCarrierTest {
 		
 		// ship must look like
 		//  x 
-		//  x x
+		//  c x
 		Coordinates center = new Coordinates(4, 4);
 		Coordinates up = new Coordinates(3, 4);
 		Coordinates right = new Coordinates(4, 5);
@@ -158,7 +158,7 @@ public class AssaultCarrierTest {
 		Coordinates[] location = ac.getLocation();
 		
 		// ship must look like
-		//  x x
+		//  x c
 		//    x
 		Coordinates center = new Coordinates(4, 4);
 		Coordinates down = new Coordinates(5, 4);

@@ -118,11 +118,7 @@ public abstract class Ship implements Serializable {
 			}
 		}
 		
-		
-//		// checks if object is still alive
-//		if (unitsAlive == 0) {
-//			this.setAlive(false);
-//		}
+
 	}
 	
 	/**
@@ -141,13 +137,6 @@ public abstract class Ship implements Serializable {
 	}
 	
 	
-//	/**
-//	 * gets the length of the ship
-//	 * @return returns the length as an integer
-//	 */
-//	public int getShipSize() {
-//		return shipSize;
-//	}
 	
 	/**
 	 * get the location integer array for the ship
@@ -254,13 +243,6 @@ public abstract class Ship implements Serializable {
 	public void setShipOnBoard() {
 		this.onBoard = true;
 	}
-
-//	
-//	/**
-//	 * Sets the variable alive of type boolean
-//	 * @param isAlive; of type boolean
-//	 */
-//	public void setAlive(boolean isAlive) {
-//		this.alive = isAlive;
-//	}
+	
+	
 }

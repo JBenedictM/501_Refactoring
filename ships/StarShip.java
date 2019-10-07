@@ -22,11 +22,15 @@ public class StarShip extends Ship{
 	
 	
 	/**
-	 * Returns ship coordindates with the shape of a StarShip
+	 * Returns ship coordindates with the shape of a "StarShip"
+	 * 		x
+	 * 	  x c x   
+	 *      x
 	 * ship will be centered on the given coordinate
 	 * Orientation is also factored in
 	 * 
 	 */
+	@Override
 	protected Coordinates[] getShipCoordinates(int row, int col) {
 		Coordinates[] newLocation = new Coordinates[super.getSize()];
 		Coordinates center = new Coordinates(row,col);
