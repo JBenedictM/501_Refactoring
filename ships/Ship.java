@@ -27,13 +27,13 @@ public abstract class Ship implements Serializable {
 	/**
 	 * A constructor that initializes:
 	 * - shipName; name of the ship
-	 * - ShipLength; length of the ship
+	 * - ShipSize; number of units of the ship
 	 * - orientation; the orientation of the ship
 	 * - shipUnitsAlive; the health of the ship
 	 * - location; An array of Coordinate objects
 	 * and add a new Coordinate up to the length of the ship
 	 * @param shipName; The name of the ship of type String
-	 * @param shipLength; the length of the ship of type int
+	 * @param shipSize; number of units of the ship
 	 */
 	public Ship(String shipName, int shipSize) {
 		this.shipName = shipName;
@@ -56,7 +56,7 @@ public abstract class Ship implements Serializable {
 	public Ship(Ship ship) {
 		this.shipName = ship.getName();
 		this.orientation = ship.getOrientation();
-		this.shipSize = ship.getShipSize();
+		this.shipSize = ship.getSize();
 		this.location = ship.getLocation();
 		this.unitsAlive = ship.getUnitsAlive();
 		this.onBoard = ship.isShipOnBoard();
@@ -87,49 +87,6 @@ public abstract class Ship implements Serializable {
 	 */
 	protected abstract Coordinates[] getShipCoordinates(int row, int col);
 	
-	
-	/*
-	 * Returns a Coordinates array of the current orientation
-	 * 
-	 * @param row; An integer row used as a reference point for the ship
-	 * @param col; An integer col used as a reference point for the ship
-	 * @return newLocation; A Coordinates array of the current orientation
-	 */
-//	private Coordinates[] createNewLocation(int row, int col) {
-//		Coordinates[] newLocation = new Coordinates[5];
-//		Coordinates center = new Coordinates(row,col);
-//		Coordinates up = new Coordinates(row - 1,col);
-//		Coordinates down = new Coordinates(row + 1,col);
-//		Coordinates right = new Coordinates(row,col + 1);
-//		Coordinates left = new Coordinates(row,col - 1);
-//		// Place Coordinates depending on the current Orientation
-//		if (getOrientation().equals("down")) {
-//			newLocation[0] = center;
-//			newLocation[1] = down;
-//			newLocation[2] = left;
-//			newLocation[3] = right;
-//			newLocation[4] = up;
-//		} else if (getOrientation().equals("up")) {
-//			newLocation[0] = center;
-//			newLocation[1] = up;
-//			newLocation[2] = right;
-//			newLocation[3] = left;
-//			newLocation[4] = down;
-//		} else if (getOrientation().equals("right")) {
-//			newLocation[0] = center;
-//			newLocation[1] = right;
-//			newLocation[2] = down;
-//			newLocation[3] = up;
-//			newLocation[4] = left;
-//		} else if (getOrientation().equals("left")) {
-//			newLocation[0] = center;
-//			newLocation[1] = left;
-//			newLocation[2] = up;
-//			newLocation[3] = down;
-//			newLocation[4] = right;
-//		}
-//		return newLocation;
-//	}
 	
 	/**
 	 * Check if ship is within boundaries
@@ -184,13 +141,13 @@ public abstract class Ship implements Serializable {
 	}
 	
 	
-	/**
-	 * gets the length of the ship
-	 * @return returns the length as an integer
-	 */
-	public int getShipSize() {
-		return shipSize;
-	}
+//	/**
+//	 * gets the length of the ship
+//	 * @return returns the length as an integer
+//	 */
+//	public int getShipSize() {
+//		return shipSize;
+//	}
 	
 	/**
 	 * get the location integer array for the ship

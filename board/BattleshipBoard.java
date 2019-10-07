@@ -114,7 +114,7 @@ public class BattleshipBoard implements Serializable{
 				count++;
 			}
 			else {
-				setShipChar(element.getShipSize(), element.getLocation(), BoardPiece.DEAD);
+				setShipChar(element.getSize(), element.getLocation(), BoardPiece.DEAD);
 			}
 		}
 
@@ -179,7 +179,7 @@ public class BattleshipBoard implements Serializable{
 		
 		// TODO : see if setAlive() is relevant
 //		ship.setAlive(true);
-		setShipChar(ship.getShipSize(), ship.getLocation(), BoardPiece.SHIP);
+		setShipChar(ship.getSize(), ship.getLocation(), BoardPiece.SHIP);
 	}
 	
 	/**
@@ -242,7 +242,7 @@ public class BattleshipBoard implements Serializable{
 	private void setValidShip(Ship ship, int row, int col) throws Exception {
 		// remove the ship if already placed
 		if (ship.isShipOnBoard()) {
-			setShipChar(ship.getShipSize(), ship.getLocation(), BoardPiece.EMPTY);
+			setShipChar(ship.getSize(), ship.getLocation(), BoardPiece.EMPTY);
 			ship.removeShipFromBoard();
 		}
 		// set ship's location
@@ -253,7 +253,7 @@ public class BattleshipBoard implements Serializable{
             if (!checkShipOverlap(ship)) {
 				// Places ships onto the user's board
 				ship.setShipOnBoard();
-				setShipChar(ship.getShipSize(), ship.getLocation(), BoardPiece.SHIP);
+				setShipChar(ship.getSize(), ship.getLocation(), BoardPiece.SHIP);
 			} else { // If the ship overlaps with another
 				throw new Exception("You have overlapped with another Ship!");
 			}
@@ -271,7 +271,7 @@ public class BattleshipBoard implements Serializable{
 		boolean overlap = false;
 		
 		// Check if another ship already occupies one of the ship's locations
-		for (int index = 0; index < ship.getShipSize(); index++) {
+		for (int index = 0; index < ship.getSize(); index++) {
 			try {
 				if (board.getPieceAt(ship.getLocation()[index]) == BoardPiece.SHIP) {
 					overlap = true;
