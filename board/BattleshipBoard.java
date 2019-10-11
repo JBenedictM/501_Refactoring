@@ -73,22 +73,22 @@ public class BattleshipBoard implements Serializable{
 	 * updates board correctly based on the piece at the coordinate
 	 * coordinate can either land on a ship or miss
 	 * 
-	 * @param coordinate; A Coordinates Object of the target
+	 * @param targetCoord; coordinate that will be changed
 	 * @throws Exception; if Coordinates Object is out of the range of the board
 	 */
-	public void targetCoordinate(Coordinates coordinates) throws Exception {
-		int targetRow = coordinates.getRow(), targetColumn = coordinates.getCol();
+	public void targetCoordinate(Coordinates targetCoord) throws Exception {
+		//int targetRow = coordinates.getRow(), targetColumn = coordinates.getCol();
 
 		// Hits
-		if (board.getPieceAt(coordinates) == BoardPiece.SHIP) {
-			board.setPieceAt(BoardPiece.HIT, coordinates);
+		if (board.getPieceAt(targetCoord) == BoardPiece.SHIP) {
+			board.setPieceAt(BoardPiece.HIT, targetCoord);
 			
 			// Update shipsAlive based on hits
-			numShipsAlive(targetRow, targetColumn);
+			numShipsAlive(targetCoord);
 		} 
 		// Misses
-		else if (board.getPieceAt(coordinates) == BoardPiece.EMPTY) {
-			board.setPieceAt(BoardPiece.MISS, coordinates);
+		else if (board.getPieceAt(targetCoord) == BoardPiece.EMPTY) {
+			board.setPieceAt(BoardPiece.MISS, targetCoord);
 		} 
 		else {
 			throw new Exception("Error, coordinates out of range of board");
@@ -98,19 +98,20 @@ public class BattleshipBoard implements Serializable{
 	
 	/*
 	 * Update shipsAlive count
+	 *
+	 * @param targetCoord; target coordinate
 	 * 
-	 * @param row; An int representing a row value
-	 * @param col; An int representing a column value
 	 */
-	private void numShipsAlive(int row, int col) {
+	private void numShipsAlive(Coordinates targetCoord) {
 		// Array to keep track of whether each ship is alive
 		Ship[] shipStates = new Ship [] {star, orbiter, battle, assault};
 		int count = 0;
 		
 		// Counts number of true booleans in shipStates array
+		
 		for (Ship element : shipStates) {
-			element.hitShip(row, col);
-			if (element.isAlive()) {
+			element.hitShip(targetCoord);
+			if (element.getUnitsAlive() > 0) {
 				count++;
 			}
 			else {
@@ -170,8 +171,10 @@ public class BattleshipBoard implements Serializable{
 			} else {
 				shipDir = Orientation.DOWN;
 			}
+			
 			ship.setOrientation(shipDir);
-			ship.placeShip(row, col);
+			Coordinates ship_coordinates = new Coordinates(row, col);
+			ship.placeShip(ship_coordinates);
 			// Checks if the ship is in bounds and does not overlap with other ships
 			inputValid = !ship.checkOutOfBounds() && !checkShipOverlap(ship);
 		}
@@ -246,7 +249,8 @@ public class BattleshipBoard implements Serializable{
 			ship.removeShipFromBoard();
 		}
 		// set ship's location
-		ship.placeShip(row, col);
+		Coordinates ship_coordinates = new Coordinates(row, col);
+		ship.placeShip(ship_coordinates);
 		
 		// Check if ship's location is in bounds and does not overlap
 		if (!ship.checkOutOfBounds()) {

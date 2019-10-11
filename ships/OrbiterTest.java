@@ -47,9 +47,9 @@ public class OrbiterTest {
 	@Test
 	public void test_basic_alive_variable() {
 		// check if units are considered alive
-		boolean isAlive = ob.isAlive();
-		boolean correct_isAlive = true;
-		assertEquals(correct_isAlive, isAlive);
+		boolean isOnBoard = ob.isShipOnBoard();
+		boolean correct_isOnBoard = false;
+		assertEquals(correct_isOnBoard, isOnBoard);
 	}
 	
 	/*
@@ -90,8 +90,10 @@ public class OrbiterTest {
 	 */
 	@Test
 	public void test_correct_right_shape() {
+		Coordinates ship_coordinates = new Coordinates(4, 4);
+
 		ob.setOrientation(Orientation.RIGHT);
-		ob.placeShip(4, 4);
+		ob.placeShip(ship_coordinates);
 		Coordinates[] location = ob.getLocation();
 		
 		// ship must look like
@@ -111,8 +113,10 @@ public class OrbiterTest {
 	 */
 	@Test
 	public void test_correct_left_shape() {
+		Coordinates ship_coordinates = new Coordinates(4, 4);
+
 		ob.setOrientation(Orientation.LEFT);
-		ob.placeShip(4, 4);
+		ob.placeShip(ship_coordinates);
 		Coordinates[] location = ob.getLocation();
 		
 		// ship must look like
@@ -133,8 +137,10 @@ public class OrbiterTest {
 	 */
 	@Test
 	public void test_correct_up_shape() {
+		Coordinates ship_coordinates = new Coordinates(4, 4);
+
 		ob.setOrientation(Orientation.UP);
-		ob.placeShip(4, 4);
+		ob.placeShip(ship_coordinates);
 		Coordinates[] location = ob.getLocation();
 		
 		// ship must look like
@@ -154,8 +160,10 @@ public class OrbiterTest {
 	 */
 	@Test
 	public void test_correct_down_shape() {
+		Coordinates ship_coordinates = new Coordinates(4, 4);
+
 		ob.setOrientation(Orientation.DOWN);
-		ob.placeShip(4, 4);
+		ob.placeShip(ship_coordinates);
 		Coordinates[] location = ob.getLocation();
 		
 		// ship must look like
@@ -176,7 +184,9 @@ public class OrbiterTest {
 	 */
 	@Test
 	public void test_correct_bounds() {
-		ob.placeShip(4,4);
+		Coordinates ship_coordinates = new Coordinates(4, 4);
+
+		ob.placeShip(ship_coordinates);
 		assertFalse(ob.checkOutOfBounds());
 	}
 	
@@ -185,7 +195,9 @@ public class OrbiterTest {
 	 */
 	@Test
 	public void test_wrong_bounds() {
-		ob.placeShip(8,8);
+		Coordinates ship_coordinates = new Coordinates(8, 8);
+
+		ob.placeShip(ship_coordinates);
 		assertTrue(ob.checkOutOfBounds());
 	}
 

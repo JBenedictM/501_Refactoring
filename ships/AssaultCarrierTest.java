@@ -47,9 +47,9 @@ public class AssaultCarrierTest {
 	@Test
 	public void test_basic_alive_variable() {
 		// check if units are considered alive
-		boolean isAlive = ac.isAlive();
-		boolean correct_isAlive = true;
-		assertEquals(correct_isAlive, isAlive);
+		boolean isOnBoard = ac.isShipOnBoard();
+		boolean correct_isOnBoard = false;
+		assertEquals(correct_isOnBoard, isOnBoard);
 	}
 	
 	/*
@@ -91,7 +91,8 @@ public class AssaultCarrierTest {
 	 */
 	@Test
 	public void test_correct_right_shape() {
-		ac.placeShip(4, 4);
+		Coordinates ship_coordinates = new Coordinates(4, 4);
+		ac.placeShip(ship_coordinates);
 		Coordinates[] location = ac.getLocation();
 		
 		// ship must look like
@@ -111,8 +112,10 @@ public class AssaultCarrierTest {
 	 */
 	@Test
 	public void test_correct_left_shape() {
+		Coordinates ship_coordinates = new Coordinates(4, 4);
+
 		ac.setOrientation(Orientation.LEFT);
-		ac.placeShip(4, 4);
+		ac.placeShip(ship_coordinates);
 		Coordinates[] location = ac.getLocation();
 		
 		// ship must look like
@@ -132,8 +135,11 @@ public class AssaultCarrierTest {
 	 */
 	@Test
 	public void test_correct_up_shape() {
+		Coordinates ship_coordinates = new Coordinates(4, 4);
+
+		
 		ac.setOrientation(Orientation.UP);
-		ac.placeShip(4, 4);
+		ac.placeShip(ship_coordinates);
 		Coordinates[] location = ac.getLocation();
 		
 		// ship must look like
@@ -153,8 +159,10 @@ public class AssaultCarrierTest {
 	 */
 	@Test
 	public void test_correct_down_shape() {
+		Coordinates ship_coordinates = new Coordinates(4, 4);
+		
 		ac.setOrientation(Orientation.DOWN);
-		ac.placeShip(4, 4);
+		ac.placeShip(ship_coordinates);
 		Coordinates[] location = ac.getLocation();
 		
 		// ship must look like
@@ -174,7 +182,9 @@ public class AssaultCarrierTest {
 	 */
 	@Test
 	public void test_correct_bounds() {
-		ac.placeShip(4,4);
+		Coordinates ship_coordinates = new Coordinates(4, 4);
+		
+		ac.placeShip(ship_coordinates);
 		assertFalse(ac.checkOutOfBounds());
 	}
 	
@@ -183,7 +193,9 @@ public class AssaultCarrierTest {
 	 */
 	@Test
 	public void test_wrong_bounds() {
-		ac.placeShip(8,8);
+		Coordinates ship_coordinates = new Coordinates(8, 8);
+
+		ac.placeShip(ship_coordinates);
 		assertTrue(ac.checkOutOfBounds());
 	}
 	

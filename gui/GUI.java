@@ -488,11 +488,11 @@ public class GUI extends JFrame implements Serializable {
 	private void setAliveShipIcons(JButton boardButton, BattleshipBoard boardObject, Coordinates coord) {
 		// Determine the ship in this location
 		Ship aShip = boardObject.getStarShip();
-		if (boardObject.getBattleCruiser().indexOfLocation(coord) != -1 && boardObject.getBattleCruiser().isAlive()) {
+		if (boardObject.getBattleCruiser().indexOfLocation(coord) != -1 && boardObject.getBattleCruiser().isShipOnBoard()) {
 			aShip = boardObject.getBattleCruiser();
-		} else if (boardObject.getAssaultCarrier().indexOfLocation(coord) != -1 && boardObject.getAssaultCarrier().isAlive()) {
+		} else if (boardObject.getAssaultCarrier().indexOfLocation(coord) != -1 && boardObject.getAssaultCarrier().isShipOnBoard()) {
 			aShip = boardObject.getAssaultCarrier();
-		} else if (boardObject.getOrbiter().indexOfLocation(coord) != -1 && boardObject.getOrbiter().isAlive()) {
+		} else if (boardObject.getOrbiter().indexOfLocation(coord) != -1 && boardObject.getOrbiter().isShipOnBoard()) {
 			aShip = boardObject.getOrbiter();
 		}
 		
@@ -535,7 +535,7 @@ public class GUI extends JFrame implements Serializable {
 		Orientation orientation = aShip.getOrientation();
 		int index = aShip.indexOfLocation(coord);
 		String path;
-		if (aShip.isAlive()) {
+		if (aShip.isShipOnBoard()) {
 			path = "./images/alive/" + shipName + "_" + orientation + index + ".png";
 		} else {
 			path = "./images/dead/" + shipName + "_" + orientation + index + ".png";
@@ -547,14 +547,14 @@ public class GUI extends JFrame implements Serializable {
 			boardButton.setDisabledIcon(new ImageIcon(path));
 			boardButton.setOpaque(false);
 		} else { // If image does not exist
-			if (aShip.isAlive()) {
+			if (aShip.isShipOnBoard()) {
 				boardButton.setBackground(Color.GREEN);
 			} else {
 				boardButton.setBackground(Color.BLACK);
 			}
 			boardButton.setOpaque(true);
 		}
-		if (!aShip.isAlive()) {
+		if (!aShip.isShipOnBoard()) {
 			boardButton.setEnabled(false);
 		}
 	}
@@ -629,8 +629,8 @@ public class GUI extends JFrame implements Serializable {
 		continueButton.addActionListener(game);
 		continueButton.setActionCommand(aBoard.getTitle());
 		continueButton.setVisible(false);
-		if (aBoard.getStarShip().isAlive() && aBoard.getBattleCruiser().isAlive() && 
-				aBoard.getAssaultCarrier().isAlive() && aBoard.getOrbiter().isAlive()) {
+		if (aBoard.getStarShip().isShipOnBoard() && aBoard.getBattleCruiser().isShipOnBoard() && 
+				aBoard.getAssaultCarrier().isShipOnBoard() && aBoard.getOrbiter().isShipOnBoard()) {
 			continueButton.setVisible(true);
 		}
 		constraints = new GridBagConstraints();

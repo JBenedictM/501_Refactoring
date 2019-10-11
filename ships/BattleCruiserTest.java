@@ -47,9 +47,9 @@ public class BattleCruiserTest {
 	@Test
 	public void test_basic_alive_variable() {
 		// check if units are considered alive
-		boolean isAlive = bc.isAlive();
-		boolean correct_isAlive = true;
-		assertEquals(correct_isAlive, isAlive);
+		boolean isOnBoard = bc.isShipOnBoard();
+		boolean correct_isOnBoard = false;
+		assertEquals(correct_isOnBoard, isOnBoard);
 	}
 	
 	/*
@@ -91,8 +91,10 @@ public class BattleCruiserTest {
 	 */
 	@Test
 	public void test_correct_right_shape() {
+		Coordinates ship_coordinates = new Coordinates(4, 4);
+
 		bc.setOrientation(Orientation.RIGHT);
-		bc.placeShip(4, 4);
+		bc.placeShip(ship_coordinates);
 		Coordinates[] location = bc.getLocation();
 		
 		// ship must look like
@@ -115,8 +117,10 @@ public class BattleCruiserTest {
 	 */
 	@Test
 	public void test_correct_left_shape() {
+		Coordinates ship_coordinates = new Coordinates(4, 4);
+
 		bc.setOrientation(Orientation.LEFT);
-		bc.placeShip(4, 4);
+		bc.placeShip(ship_coordinates);
 		Coordinates[] location = bc.getLocation();
 		
 		// ship must look like
@@ -139,8 +143,10 @@ public class BattleCruiserTest {
 	 */
 	@Test
 	public void test_correct_up_shape() {
+		Coordinates ship_coordinates = new Coordinates(4, 4);
+
 		bc.setOrientation(Orientation.UP);
-		bc.placeShip(4, 4);
+		bc.placeShip(ship_coordinates);
 		Coordinates[] location = bc.getLocation();
 		
 		// ship must look like
@@ -164,8 +170,10 @@ public class BattleCruiserTest {
 	 */
 	@Test
 	public void test_correct_down_shape() {
+		Coordinates ship_coordinates = new Coordinates(4, 4);
+
 		bc.setOrientation(Orientation.DOWN);
-		bc.placeShip(4, 4);
+		bc.placeShip(ship_coordinates);
 		Coordinates[] location = bc.getLocation();
 		
 		// ship must look like
@@ -189,7 +197,9 @@ public class BattleCruiserTest {
 	 */
 	@Test
 	public void test_correct_bounds() {
-		bc.placeShip(4,4);
+		Coordinates ship_coordinates = new Coordinates(4, 4);
+
+		bc.placeShip(ship_coordinates);
 		assertFalse(bc.checkOutOfBounds());
 	}
 	
@@ -198,7 +208,9 @@ public class BattleCruiserTest {
 	 */
 	@Test
 	public void test_wrong_bounds() {
-		bc.placeShip(8,8);
+		Coordinates ship_coordinates = new Coordinates(8, 8);
+
+		bc.placeShip(ship_coordinates);
 		assertTrue(bc.checkOutOfBounds());
 	}
 

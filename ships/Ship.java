@@ -65,12 +65,13 @@ public abstract class Ship implements Serializable {
 	/**
 	 * Sets location of the ship 
 	 * 
-	 * @param row; The row value of type int
-	 * @param col; The column value of type int
+	 * @param coord; center coordinate of the ship on the board
 	 */
-	public void placeShip(int row, int col) {
+	public void placeShip(Coordinates coord) {
+		int coord_row = coord.getRow();
+		int coord_column = coord.getCol();
 		// Get the new location 
-		Coordinates[] newLocation = getShipCoordinates(row,col);
+		Coordinates[] newLocation = getShipCoordinates(coord_row,coord_column);
 		// for each index input new Coordinates
 		for (int index = 0; index < shipSize; index++) {
 			location[index] = newLocation[index];
@@ -107,15 +108,21 @@ public abstract class Ship implements Serializable {
 	
 	/**
 	 * Decrements the units of the object
+	 * 
+	 * @param targetCoord; the targeted coordinate
 	 * @param row; the row that is targeted of type int
 	 * @param col; the col this is targeted of type int
 	 */
-	public void hitShip(int row, int col) {
+	public void hitShip(Coordinates targetCoord) {
 		// decrements the units
 		for (int index = 0; index < shipSize; index++) {
-			if (location[index].getRow() == row && location[index].getCol() == col) {
+			if (location[index].equals(targetCoord)) {
 				unitsAlive--;
 			}
+		}
+		
+		if (unitsAlive == 0) {
+			removeShipFromBoard();
 		}
 		
 
@@ -219,18 +226,14 @@ public abstract class Ship implements Serializable {
 	}
 
 	
-	/**
-	 * 
-	 * @return - true if the ship still has units that are alive, otherwise false
-	 */
-	public boolean isAlive() {
-		
-		if (unitsAlive != 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+//	/**
+//	 * 
+//	 * @return - true if the ship still has units that are alive, otherwise false
+//	 */
+//	public boolean isAlive() {
+//		return this.onBoard;
+//		
+//	}
 	
 	public boolean isShipOnBoard() {
 		return this.onBoard;

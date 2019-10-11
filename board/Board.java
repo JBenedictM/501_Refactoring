@@ -17,7 +17,7 @@ public class Board implements Serializable {
 	
 	public enum BoardPiece {
 		SHIP, EMPTY, HIT, MISS, DEAD;
-	}
+	};
 	
 	// Instance Variables 
 	private BoardPiece[][] board;
@@ -32,7 +32,7 @@ public class Board implements Serializable {
 	}
 	
 	/**
-	 * initializes a new nxn empty board
+	 * initializes a new nxm empty board
 	 */
 	public Board(int row, int column) {
 		this.row = row;
