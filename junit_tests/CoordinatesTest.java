@@ -1,8 +1,10 @@
-package coordinates;
+package junit_tests;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import coordinates.Coordinates;
 
 public class CoordinatesTest {
 

@@ -1,4 +1,4 @@
-package board;
+package junit_tests;
 
 import static org.junit.Assert.*;
 
@@ -7,6 +7,8 @@ import java.io.Serializable;
 import org.junit.Before;
 import org.junit.Test;
 
+import board.BattleshipBoard;
+import board.Board;
 import board.Board.BoardPiece;
 import coordinates.Coordinates;
 

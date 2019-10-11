@@ -1,4 +1,4 @@
-package ships;
+package junit_tests;
 
 import static org.junit.Assert.*;
 
@@ -6,15 +6,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 import coordinates.Coordinates;
+import ships.AssaultCarrier;
+import ships.Ship;
 import ships.Ship.Orientation;
 
-public class OrbiterTest {
+public class AssaultCarrierTest {
 
-	private Orbiter ob;
+	private AssaultCarrier ac;
 	
 	@Before
 	public void setup() {
-		ob = new Orbiter();
+		ac = new AssaultCarrier();
 		
 	}
 	
@@ -24,8 +26,8 @@ public class OrbiterTest {
 	@Test
 	public void test_basic_name() {
 		// check if name is right
-		String name = ob.getName();
-		String correctName = "Orbiter";
+		String name = ac.getName();
+		String correctName = "Assault Carrier";
 		assertEquals(correctName, name);
 		
 	}
@@ -36,8 +38,8 @@ public class OrbiterTest {
 	@Test
 	public void test_basic_size() {
 		// check if size is right
-		int size = ob.getSize();
-		int correct_size = 2;
+		int size = ac.getSize();
+		int correct_size = 3;
 		assertEquals(correct_size, size);
 	}
 	
@@ -47,7 +49,7 @@ public class OrbiterTest {
 	@Test
 	public void test_basic_alive_variable() {
 		// check if units are considered alive
-		boolean isOnBoard = ob.isShipOnBoard();
+		boolean isOnBoard = ac.isShipOnBoard();
 		boolean correct_isOnBoard = false;
 		assertEquals(correct_isOnBoard, isOnBoard);
 	}
@@ -58,8 +60,8 @@ public class OrbiterTest {
 	@Test
 	public void test_basic_number_of_units_alive() {
 		// check if correct number of units alive
-		int units_alive = ob.getUnitsAlive();
-		int correct_units_alive = 2;
+		int units_alive = ac.getUnitsAlive();
+		int correct_units_alive = 3;
 		assertEquals(correct_units_alive, units_alive);
 	}
 	
@@ -69,7 +71,7 @@ public class OrbiterTest {
 	@Test
 	public void test_correct_orientation_initialization() {
 		// check if ship is initially oriented to the right
-		Orientation orient = ob.getOrientation();
+		Orientation orient = ac.getOrientation();
 		Orientation correct_orient = Orientation.RIGHT;
 		assertEquals(correct_orient, orient);
 	}
@@ -80,10 +82,11 @@ public class OrbiterTest {
 	@Test
 	public void test_correct_onBoard_intialization() {
 		// ensure ship is not initialize on board
-		boolean onBoard = ob.isShipOnBoard();
+		boolean onBoard = ac.isShipOnBoard();
 		boolean correct_onBoard = false;
 		assertEquals(correct_onBoard, onBoard);
 	}
+	
 	
 	/*
 	 * checks that the ship has the right shape when oriented to the right
@@ -91,21 +94,19 @@ public class OrbiterTest {
 	@Test
 	public void test_correct_right_shape() {
 		Coordinates ship_coordinates = new Coordinates(4, 4);
-
-		ob.setOrientation(Orientation.RIGHT);
-		ob.placeShip(ship_coordinates);
-		Coordinates[] location = ob.getLocation();
+		ac.placeShip(ship_coordinates);
+		Coordinates[] location = ac.getLocation();
 		
 		// ship must look like
-		//    
-		//    c r
-		//    
-		Coordinates c = new Coordinates(4, 4);
-		Coordinates r = new Coordinates(4, 5);
+		//  c x
+		//  x
+		Coordinates center = new Coordinates(4, 4);
+		Coordinates right = new Coordinates(4, 5);
+		Coordinates down = new Coordinates(5, 4);
 		
-		assertTrue(location[0].equals(c));
-		assertTrue(location[1].equals(r));
-	
+		assertTrue(location[0].equals(center));
+		assertTrue(location[1].equals(right));
+		assertTrue(location[2].equals(down));
 	}
 	
 	/*
@@ -115,21 +116,20 @@ public class OrbiterTest {
 	public void test_correct_left_shape() {
 		Coordinates ship_coordinates = new Coordinates(4, 4);
 
-		ob.setOrientation(Orientation.LEFT);
-		ob.placeShip(ship_coordinates);
-		Coordinates[] location = ob.getLocation();
+		ac.setOrientation(Orientation.LEFT);
+		ac.placeShip(ship_coordinates);
+		Coordinates[] location = ac.getLocation();
 		
 		// ship must look like
-		//   
-		//  r c 
-		//    
-		Coordinates c = new Coordinates(4, 4);
-		Coordinates r = new Coordinates(4, 3);
-
+		//    x
+		//  x c
+		Coordinates center = new Coordinates(4, 4);
+		Coordinates left = new Coordinates(4, 3);
+		Coordinates up = new Coordinates(3, 4);
 		
-		assertTrue(location[0].equals(c));
-		assertTrue(location[1].equals(r));
-		
+		assertTrue(location[0].equals(center));
+		assertTrue(location[1].equals(left));
+		assertTrue(location[2].equals(up));
 	}
 	
 	/*
@@ -139,45 +139,45 @@ public class OrbiterTest {
 	public void test_correct_up_shape() {
 		Coordinates ship_coordinates = new Coordinates(4, 4);
 
-		ob.setOrientation(Orientation.UP);
-		ob.placeShip(ship_coordinates);
-		Coordinates[] location = ob.getLocation();
+		
+		ac.setOrientation(Orientation.UP);
+		ac.placeShip(ship_coordinates);
+		Coordinates[] location = ac.getLocation();
 		
 		// ship must look like
-		//    r
-		//    c 
-		//     
-		Coordinates c = new Coordinates(4, 4);
-		Coordinates r = new Coordinates(3, 4);
-
-		assertTrue(location[0].equals(c));
-		assertTrue(location[1].equals(r));
-
+		//  x 
+		//  c x
+		Coordinates center = new Coordinates(4, 4);
+		Coordinates up = new Coordinates(3, 4);
+		Coordinates right = new Coordinates(4, 5);
+		
+		assertTrue(location[0].equals(center));
+		assertTrue(location[1].equals(up));
+		assertTrue(location[2].equals(right));
 	}
 	
 	/*
-	 * checks that the ship has the right shape when oriented down
+	 * checks that the ship has the right shape when oriented up
 	 */
 	@Test
 	public void test_correct_down_shape() {
 		Coordinates ship_coordinates = new Coordinates(4, 4);
-
-		ob.setOrientation(Orientation.DOWN);
-		ob.placeShip(ship_coordinates);
-		Coordinates[] location = ob.getLocation();
+		
+		ac.setOrientation(Orientation.DOWN);
+		ac.placeShip(ship_coordinates);
+		Coordinates[] location = ac.getLocation();
 		
 		// ship must look like
-		//    
-		//    c 
-		//    r 
-		Coordinates c = new Coordinates(4, 4);
-		Coordinates r = new Coordinates(5, 4);
+		//  x c
+		//    x
+		Coordinates center = new Coordinates(4, 4);
+		Coordinates down = new Coordinates(5, 4);
+		Coordinates left = new Coordinates(4, 3);
 		
-		assertTrue(location[0].equals(c));
-		assertTrue(location[1].equals(r));
-	
+		assertTrue(location[0].equals(center));
+		assertTrue(location[1].equals(down));
+		assertTrue(location[2].equals(left));
 	}
-	
 	
 	/*
 	 * checks if check bounds recognizes correct bounds
@@ -185,9 +185,9 @@ public class OrbiterTest {
 	@Test
 	public void test_correct_bounds() {
 		Coordinates ship_coordinates = new Coordinates(4, 4);
-
-		ob.placeShip(ship_coordinates);
-		assertFalse(ob.checkOutOfBounds());
+		
+		ac.placeShip(ship_coordinates);
+		assertFalse(ac.checkOutOfBounds());
 	}
 	
 	/*
@@ -197,9 +197,9 @@ public class OrbiterTest {
 	public void test_wrong_bounds() {
 		Coordinates ship_coordinates = new Coordinates(8, 8);
 
-		ob.placeShip(ship_coordinates);
-		assertTrue(ob.checkOutOfBounds());
+		ac.placeShip(ship_coordinates);
+		assertTrue(ac.checkOutOfBounds());
 	}
-
+	
 
 }

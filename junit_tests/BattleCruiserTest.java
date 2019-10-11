@@ -1,4 +1,4 @@
-package ships;
+package junit_tests;
 
 import static org.junit.Assert.*;
 
@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import coordinates.Coordinates;
+import ships.BattleCruiser;
+import ships.Ship;
 import ships.Ship.Orientation;
 
 public class BattleCruiserTest {

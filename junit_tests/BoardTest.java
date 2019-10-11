@@ -1,10 +1,11 @@
-package board;
+package junit_tests;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import board.Board;
 import board.Board.BoardPiece;
 import coordinates.Coordinates;
 

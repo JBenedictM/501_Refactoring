@@ -1,7 +1,9 @@
+package junit_tests;
 import static org.junit.Assert.*;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import player.AI;
 import player.AI.Difficulty;
 import board.Board;
